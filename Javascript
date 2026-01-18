@@ -1,25 +1,31 @@
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const body = document.body;
+
+// ダークモード切り替え
+darkModeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
+});
+
+// ページ読み込み時の処理
+window.onload = () => {
+    // ダークモード復元
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        body.classList.add('dark-mode');
+    }
+    // 初期表示としてタイマーを表示
+    showFeature('timer-section');
+};
+
 // 機能切り替え関数
 function showFeature(featureId) {
-    // 全てのコンテンツを一旦非表示にする
-    const contents = document.querySelectorAll('.feature-content');
-    contents.forEach(content => {
+    // 全てのコンテンツを隠す
+    document.querySelectorAll('.feature-content').forEach(content => {
         content.classList.remove('active');
     });
-
-    // 指定されたIDのコンテンツだけ表示する
+    // クリックされたIDだけ表示
     const target = document.getElementById(featureId);
     if (target) {
         target.classList.add('active');
     }
 }
-
-// ページ読み込み時の初期表示（例：メニューだけ出す、またはタイマーを出す）
-window.onload = () => {
-    // localStorageからダークモードの状態を復元する既存コードはそのまま
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-    }
-    
-    // 最初はタイマーを表示しておく場合
-    showFeature('timer-section');
-};
