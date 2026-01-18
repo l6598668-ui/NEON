@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="background:#222; color:#0f0; text-align:center;">
+  <h1>表示成功！</h1>
+  <p>これが本当のオリジナルHTMLです。</p>
+</body>
+</html>
