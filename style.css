@@ -31,7 +31,6 @@ h2, h3 { color: #0ff; margin-bottom: 15px; border-bottom: 1px dashed #0ff; paddi
 footer {
     margin-top: 50px;
     padding: 10px;
-    padding-bottom: 5px; /* ここで下の余白だけを小さく調整 */
     border-top: 1px solid #0f0;
     text-align: center;
     font-size: 0.8rem;
