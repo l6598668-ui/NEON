@@ -12,6 +12,7 @@ header {
     border-bottom: 1px solid #0f0;
     padding-bottom: 10px;
 }
+/* ... (他の基本的なスタイルは省略、変更なし) ... */
 
 .logo {
     text-align: center;
@@ -42,6 +43,7 @@ header {
     background: #0f0;
     color: #222;
 }
+
 
 /* 非表示・表示の制御 */
 .feature-content {
@@ -99,60 +101,28 @@ header {
 /* カウントダウン入力欄のスタイル */
 .countdown-controls-top {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* 中央揃え */
     align-items: center;
     gap: 10px;
+    margin-bottom: 10px;
 }
 
-.countdown-inputs {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    flex: 1;
-}
-
-.countdown-inputs input[type="number"] {
+/* select要素（プルダウン）のスタイル */
+.countdown-controls-top select {
     background: #333;
     border: 1px solid #0f0;
     color: #0f0;
     padding: 10px;
-    width: 60px;
-    font-size: 1rem;
-    text-align: center;
-    -moz-appearance: textfield; 
-}
-
-.countdown-inputs input[type="number"]::-webkit-outer-spin-button,
-.countdown-inputs input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.countdown-inputs input[type="number"]:focus {
-    outline: none;
-    border-color: #fff;
-}
-
-/* 半角入力メッセージ */
-.input-message {
-    font-size: 0.8rem;
-    color: #0f0;
-    margin-bottom: 5px;
-    text-align: left;
-}
-
-/* プルダウンメニューのスタイル */
-#countdown-preset {
-    background: #333;
-    border: 1px solid #0f0;
-    color: #0f0;
-    padding: 10px;
-    border-radius: 8px;
+    border-radius: 4px;
     font-size: 1rem;
     cursor: pointer;
-    flex: 1;
+    /* 幅を自動調整 */
 }
+
+
+/* 半角入力メッセージは不要になったためスタイルも削除 */
+
+/* プルダウンメニュー（プリセット用）のスタイルは削除 */
 
 /* 新しい入力欄とプルダウンメニューの共通スタイル (単位変換用) */
 .feature-input {
