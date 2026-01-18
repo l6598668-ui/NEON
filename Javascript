@@ -1,31 +1,75 @@
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-const body = document.body;
+/* --- 基本設定（通常モード：黒背景・緑文字） --- */
+body {
+    background: #000; /* 真っ黒 */
+    color: #0f0;       /* ネオングリーン */
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 20px;
+    transition: background 0.3s, color 0.3s;
+}
 
-// ダークモード切り替え
-darkModeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
-});
+/* 右上固定ボタン */
+#dark-mode-toggle {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border: 2px solid #0f0;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 9999;
+}
 
-// ページ読み込み時の処理
-window.onload = () => {
-    // ダークモード復元
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        body.classList.add('dark-mode');
-    }
-    // 初期表示としてタイマーを表示
-    showFeature('timer-section');
-};
+/* メニューの見た目（以前のデザインを再現） */
+#feature-menu { margin-top: 40px; }
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+.feature-btn {
+    background: #333;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #0f0;
+    font-weight: bold;
+    color: #0f0;
+    text-align: center;
+    cursor: pointer;
+}
+.feature-btn:hover {
+    background: #0f0;
+    color: #222;
+}
 
-// 機能切り替え関数
-function showFeature(featureId) {
-    // 全てのコンテンツを隠す
-    document.querySelectorAll('.feature-content').forEach(content => {
-        content.classList.remove('active');
-    });
-    // クリックされたIDだけ表示
-    const target = document.getElementById(featureId);
-    if (target) {
-        target.classList.add('active');
-    }
+/* コンテンツ表示切り替え */
+.feature-content { display: none; margin-top: 20px; }
+.feature-content.active { display: block; }
+
+/* --- ダークモード（白背景・赤文字） --- */
+body.dark-mode {
+    background: #fff;
+    color: #222;
+}
+
+/* ダークモード時に赤色に変える要素を一括指定 */
+body.dark-mode .feature-btn,
+body.dark-mode .timer-container,
+body.dark-mode header,
+body.dark-mode footer {
+    background: #eee;
+    color: #f00;      /* 赤文字 */
+    border-color: #f00;
+}
+
+body.dark-mode #dark-mode-toggle {
+    border-color: #f00;
+}
+
+body.dark-mode .logo,
+body.dark-mode #timer-display {
+    color: #f00;
 }
