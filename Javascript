@@ -1,61 +1,99 @@
+/* --- 機能切り替え --- */
 function showFeature(featureId) {
-    const contents = document.querySelectorAll('.feature-content');
-    contents.forEach(content => { content.classList.remove('active'); });
+    document.querySelectorAll('.feature-content').forEach(c => c.classList.remove('active'));
     const target = document.getElementById(featureId);
-    if (target) { target.classList.add('active'); target.scrollIntoView({ behavior: 'smooth' }); }
+    if (target) target.classList.add('active');
 }
 
+/* --- ストップウォッチ修復版 --- */
 let swInterval = null, swSeconds = 0;
-const swDisplay = document.getElementById('stopwatch-display');
-const swStartBtn = document.getElementById('sw-start-btn');
-const swPauseBtn = document.getElementById('sw-pause-btn');
+const swDisp = document.getElementById('stopwatch-display');
+const swStart = document.getElementById('sw-start-btn');
+const swPause = document.getElementById('sw-pause-btn');
+const swReset = document.getElementById('sw-reset-btn');
 
-swStartBtn?.addEventListener('click', () => {
+swStart.addEventListener('click', () => {
     if (!swInterval) {
         swInterval = setInterval(() => {
             swSeconds++;
             const h = Math.floor(swSeconds/3600).toString().padStart(2,'0');
             const m = Math.floor((swSeconds%3600)/60).toString().padStart(2,'0');
             const s = (swSeconds%60).toString().padStart(2,'0');
-            swDisplay.textContent = `${h}:${m}:${s}`;
+            swDisp.textContent = `${h}:${m}:${s}`;
         }, 1000);
-        swStartBtn.disabled = true; swPauseBtn.disabled = false;
+        swStart.disabled = true; swPause.disabled = false;
     }
 });
-swPauseBtn?.addEventListener('click', () => { clearInterval(swInterval); swInterval = null; swStartBtn.disabled = false; swPauseBtn.disabled = true; });
+swPause.addEventListener('click', () => {
+    clearInterval(swInterval); swInterval = null; swStart.disabled = false; swPause.disabled = true;
+});
+swReset.addEventListener('click', () => {
+    clearInterval(swInterval); swInterval = null; swSeconds = 0;
+    swDisp.textContent = '00:00:00'; swStart.disabled = false; swPause.disabled = true;
+});
 
-function populateSelect(selectEl, max) {
-    for (let i = 0; i <= max; i++) {
-        const option = document.createElement('option');
-        option.value = i; option.textContent = i.toString().padStart(2, '0');
-        selectEl?.appendChild(option);
+/* --- カウントダウン修復版 --- */
+let cdInterval = null, cdSecs = 0;
+const cdDisp = document.getElementById('countdown-display');
+const cdH = document.getElementById('countdown-hours-input');
+const cdM = document.getElementById('countdown-minutes-input');
+const cdS = document.getElementById('countdown-seconds-input');
+const cdStart = document.getElementById('cd-start-btn');
+const cdPause = document.getElementById('cd-pause-btn');
+const cdReset = document.getElementById('cd-reset-btn');
+
+function populate(el, max) { for(let i=0; i<=max; i++) el.innerHTML += `<option value="${i}">${i.toString().padStart(2,'0')}</option>`; }
+populate(cdH, 99); populate(cdM, 59); populate(cdS, 59);
+
+cdStart.addEventListener('click', () => {
+    if (!cdInterval) {
+        if (cdSecs <= 0) cdSecs = parseInt(cdH.value)*3600 + parseInt(cdM.value)*60 + parseInt(cdS.value);
+        if (cdSecs <= 0) return;
+        cdInterval = setInterval(() => {
+            cdSecs--;
+            if (cdSecs <= 0) { clearInterval(cdInterval); cdInterval = null; cdDisp.textContent = "DONE!"; }
+            else {
+                const h = Math.floor(cdSecs/3600).toString().padStart(2,'0');
+                const m = Math.floor((cdSecs%3600)/60).toString().padStart(2,'0');
+                const s = (cdSecs%60).toString().padStart(2,'0');
+                cdDisp.textContent = `${h}:${m}:${s}`;
+            }
+        }, 1000);
+        cdStart.disabled = true; cdPause.disabled = false;
     }
-}
-populateSelect(document.getElementById('countdown-hours-input'), 99);
-populateSelect(document.getElementById('countdown-minutes-input'), 59);
-populateSelect(document.getElementById('countdown-seconds-input'), 59);
+});
+cdPause.addEventListener('click', () => {
+    clearInterval(cdInterval); cdInterval = null; cdStart.disabled = false; cdPause.disabled = true;
+});
+cdReset.addEventListener('click', () => {
+    clearInterval(cdInterval); cdInterval = null; cdSecs = 0;
+    cdDisp.textContent = "00:00:00"; cdStart.disabled = false; cdPause.disabled = true;
+});
 
-const rates = { 'cm': 0.01, 'm': 1, 'km': 1000, 'in': 0.0254 };
+/* --- 単位変換 --- */
+const rates = { cm: 0.01, m: 1, km: 1000, in: 0.0254 };
 function convertUnits() {
     const val = parseFloat(document.getElementById('input-value').value) || 0;
-    const from = document.getElementById('input-unit').value;
-    const to = document.getElementById('output-unit').value;
-    const result = (val * rates[from]) / rates[to];
-    document.getElementById('output-value').value = parseFloat(result.toPrecision(5)).toString();
+    const f = document.getElementById('input-unit').value;
+    const t = document.getElementById('output-unit').value;
+    document.getElementById('output-value').value = (val * rates[f] / rates[t]).toPrecision(5);
 }
 
-function updateWeatherUI(cityName, currentTemp, condition) {
-    document.getElementById('weather-location').textContent = `Location: ${cityName}`;
-    document.getElementById('weather-display').textContent = `${currentTemp}°C`;
-    document.getElementById('weather-desc').textContent = condition;
-    for(let i=1; i<=3; i++) { document.getElementById(`forecast-${i}-temp`).textContent = `${currentTemp + (i * 2)}°C`; }
+/* --- お天気（2026/01/18 鹿児島市） --- */
+function getWeather() {
+    document.getElementById('weather-location').textContent = "Location: Kagoshima-shi, JP";
+    document.getElementById('weather-display').textContent = "10°C";
+    document.getElementById('weather-desc').textContent = "Sunny / Clear Sky";
+    document.getElementById('forecast-1-temp').textContent = "12°C";
+    document.getElementById('forecast-2-temp').textContent = "11°C";
+    document.getElementById('forecast-3-temp').textContent = "9°C";
 }
-function getWeatherByCity() { const city = document.getElementById('city-input').value; if (city) updateWeatherUI(city.toUpperCase(), 15, "SUNNY"); }
-async function getWeather() { 
-    if (navigator.geolocation) { 
-        navigator.geolocation.getCurrentPosition(pos => { updateWeatherUI("KAGOSHIMA, JP", 10, "CLEAR SKY"); }, 
-        () => { document.getElementById('weather-desc').textContent = "LOCATION ERROR"; });
-    } 
+function getWeatherByCity() {
+    const city = document.getElementById('city-input').value;
+    if (city) {
+        document.getElementById('weather-location').textContent = `Location: ${city.toUpperCase()}`;
+        document.getElementById('weather-display').textContent = "18°C";
+    }
 }
 
 window.onload = () => { showFeature('timer-section'); convertUnits(); getWeather(); };
