@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEON PORTAL</title>
+    <!-- ここがファビコンの設定です -->
+    <link rel="icon" href="favicon.png" type="image/png">
+    <!-- ここで style.css を読み込みます -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -30,7 +33,7 @@
 </nav>
 
 <main>
-    <!-- タイマー機能セクション (ストップウォッチとカウントダウンを配置) -->
+    <!-- タイマー機能セクション -->
     <section id="timer-section" class="feature-content active">
         <div class="timer-wrapper">
             <!-- ストップウォッチエリア -->
@@ -100,7 +103,7 @@
         }
     }
 
-    // --- ストップウォッチ ロジック (変更なし) ---
+    // --- ストップウォッチ ロジック ---
     let swInterval = null;
     let swSeconds = 0;
     const swDisplay = document.getElementById('stopwatch-display');
@@ -143,7 +146,7 @@
     }
 
 
-    // --- カウントダウンタイマー ロジック (プルダウン追加) ---
+    // --- カウントダウンタイマー ロジック ---
     let cdInterval = null;
     let cdSecondsRemaining = 0;
     const cdMinutesInput = document.getElementById('countdown-minutes-input');
@@ -154,7 +157,6 @@
     const cdPauseBtn = document.getElementById('cd-pause-btn');
     const cdResetBtn = document.getElementById('cd-reset-btn');
     
-    // 入力監視イベント: 半角数字以外を排除し、最大値を制御
     function enforceHalfWidthNumeric(event) {
         let input = event.target;
         input.value = input.value.replace(/[０-９]/g, function(s) {
@@ -169,7 +171,6 @@
     cdMinutesInput.addEventListener('input', enforceHalfWidthNumeric);
     cdSecondsInput.addEventListener('input', enforceHalfWidthNumeric);
 
-    // プリセット選択時の処理
     cdPresetSelect.addEventListener('change', (event) => {
         const totalSeconds = parseInt(event.target.value);
         if (totalSeconds > 0) {
@@ -177,8 +178,8 @@
             const seconds = totalSeconds % 60;
             cdMinutesInput.value = minutes;
             cdSecondsInput.value = seconds;
-            updateCountdownDisplay(totalSeconds); // 表示も更新
-            cdPresetSelect.value = 0; // 選択肢をリセット
+            updateCountdownDisplay(totalSeconds);
+            cdPresetSelect.value = 0; 
         }
     });
 
