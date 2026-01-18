@@ -1,181 +1,37 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEON PORTAL</title>
-    <link rel="icon" href="mashiopi_favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+/* ... (既存のCSSは変更なし) ... */
 
-<header>
-    <h1 class="logo">NEON PORTAL</h1>
-</header>
+/* 新しい入力欄とプルダウンメニューの共通スタイル */
+.feature-input {
+    background: #333;
+    border: 1px solid #0f0;
+    color: #0f0;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 1rem;
+    /* feature-btn のスタイルと合わせる */
+    box-sizing: border-box;
+}
 
-<nav id="feature-menu">
-    <div class="feature-grid">
-        <button class="feature-btn" onclick="showFeature('timer-section')">タイマー</button>
-        <button class="feature-btn" onclick="showFeature('unit-converter')">単位変換</button>
-        <button class="feature-btn" onclick="showFeature('color-palette')">色見本帳</button>
-        <button class="feature-btn" onclick="showFeature('calculator')">計算機</button>
-        <button class="feature-btn" onclick="showFeature('study-counter')">学習記録</button>
-        <button class="feature-btn" onclick="showFeature('flashcards')">フラッシュカード</button>
-        <button class="feature-btn" onclick="showFeature('random-picker')">ランダム出題</button>
-        <button class="feature-btn" onclick="showFeature('bookmarks')">お気に入り</button>
-        <button class="feature-btn" onclick="showFeature('progress-bar')">学習進捗</button>
-        <button class="feature-btn" onclick="showFeature('rss-reader')">RSSリーダー</button>
-        <button class="feature-btn" onclick="showFeature('weather-api')">お天気</button>
-        <button class="feature-btn" onclick="showFeature('voting-system')">投票システム</button>
-    </div>
-</nav>
+.feature-input:focus {
+    outline: none;
+    border-color: #fff;
+}
 
-<main>
-    <!-- タイマー機能セクション (変更なし) -->
-    <section id="timer-section" class="feature-content active">
-        <div class="timer-wrapper">
-            <div class="timer-container stopwatch">
-                <h3>STOPWATCH</h3>
-                <div id="stopwatch-display" class="display">00:00</div>
-                <div class="timer-controls">
-                    <button id="sw-start-btn" class="feature-btn">スタート</button>
-                    <button id="sw-pause-btn" class="feature-btn" disabled>一時停止</button>
-                    <button id="sw-reset-btn" class="feature-btn">リセット</button>
-                </div>
-            </div>
-            <div class="timer-container countdown">
-                <h3>COUNTDOWN</h3>
-                <p class="input-message">※半角数字で入力またはプルダウン選択</p>
-                <div class="countdown-controls-top">
-                    <div class="countdown-inputs">
-                        <input type="number" id="countdown-minutes-input" placeholder="分" min="0" max="99" value="0">
-                        <span>:</span>
-                        <input type="number" id="countdown-seconds-input" placeholder="秒" min="0" max="59" value="0">
-                    </div>
-                    <select id="countdown-preset" class="feature-btn">
-                        <option value="0">プリセット選択</option>
-                        <option value="300">5分</option>
-                        <option value="600">10分</option>
-                        <option value="900">15分</option>
-                        <option value="1800">30分</option>
-                    </select>
-                </div>
-                <div id="countdown-display" class="display">00:00</div>
-                <div class="timer-controls">
-                    <button id="cd-start-btn" class="feature-btn">スタート</button>
-                    <button id="cd-pause-btn" class="feature-btn" disabled>一時停止</button>
-                    <button id="cd-reset-btn" class="feature-btn">リセット</button>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- 単位変換機能セクション (新規追加) -->
-    <section id="unit-converter" class="feature-content">
-        <h2>UNIT CONVERTER</h2>
-        <div class="converter-wrapper">
-            <input type="number" id="input-value" class="feature-input" value="1">
-            <select id="input-unit" class="feature-input">
-                <option value="cm">センチメートル (cm)</option>
-                <option value="m">メートル (m)</option>
-                <option value="km">キロメートル (km)</option>
-                <option value="in">インチ (in)</option>
-            </select>
-            <span>=</span>
-            <input type="text" id="output-value" class="feature-input" readonly>
-            <select id="output-unit" class="feature-input">
-                <option value="cm">センチメートル (cm)</option>
-                <option value="m">メートル (m)</option>
-                <option value="km">キロメートル (km)</option>
-                <option value="in">インチ (in)</option>
-            </select>
-        </div>
-    </section>
+/* 単位変換セクションの配置 */
+.converter-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
 
-    <!-- 他の機能セクション (空の状態) -->
-    <section id="color-palette" class="feature-content"><h2>COLOR PALETTE</h2></section>
-    <section id="calculator" class="feature-content"><h2>CALCULATOR</h2></section>
-    <!-- ... 省略 ... -->
-
-</main>
-
-<script>
-    // --- 機能切り替えロジック (変更なし) ---
-    function showFeature(featureId) {
-        const contents = document.querySelectorAll('.feature-content');
-        contents.forEach(content => {
-            content.classList.remove('active');
-        });
-        const target = document.getElementById(featureId);
-        if (target) {
-            target.classList.add('active');
-        }
-    }
-
-    // --- ストップウォッチ ロジック (変更なし) ---
-    let swInterval = null;
-    let swSeconds = 0;
-    const swDisplay = document.getElementById('stopwatch-display');
-    const swStartBtn = document.getElementById('sw-start-btn');
-    const swPauseBtn = document.getElementById('sw-pause-btn');
-    const swResetBtn = document.getElementById('sw-reset-btn');
-    swStartBtn.addEventListener('click', () => { /* ... */ });
-    swPauseBtn.addEventListener('click', () => { /* ... */ });
-    swResetBtn.addEventListener('click', () => { /* ... */ });
-    function updateStopwatch() { /* ... */ }
-
-    // --- カウントダウンタイマー ロジック (変更なし) ---
-    let cdInterval = null; /* ... */
-    // ... cdMinutesInput, cdSecondsInput, cdPresetSelect, etc ...
-    function enforceHalfWidthNumeric(event) { /* ... */ }
-    cdMinutesInput.addEventListener('input', enforceHalfWidthNumeric);
-    cdSecondsInput.addEventListener('input', enforceHalfWidthNumeric);
-    cdPresetSelect.addEventListener('change', (event) => { /* ... */ });
-    cdStartBtn.addEventListener('click', () => { /* ... */ });
-    cdPauseBtn.addEventListener('click', () => { /* ... */ });
-    cdResetBtn.addEventListener('click', () => { /* ... */ });
-    function tick() { /* ... */ }
-    function updateCountdownDisplay(secondsTotal) { /* ... */ }
-
-
-    // --- 単位変換ロジック (新規追加) ---
-    const inputValueEl = document.getElementById('input-value');
-    const inputUnitEl = document.getElementById('input-unit');
-    const outputValueEl = document.getElementById('output-value');
-    const outputUnitEl = document.getElementById('output-unit');
-
-    const conversionRates = { // 全てメートル基準
-        'cm': 0.01,
-        'm': 1,
-        'km': 1000,
-        'in': 0.0254
-    };
-
-    function convertUnits() {
-        const inputValue = parseFloat(inputValueEl.value) || 0;
-        const inputUnit = inputUnitEl.value;
-        const outputUnit = outputUnitEl.value;
-
-        // 一度メートルに変換してから、目的の単位に変換
-        const valueInMeters = inputValue * conversionRates[inputUnit];
-        const outputValue = valueInMeters / conversionRates[outputUnit];
-
-        outputValueEl.value = outputValue.toFixed(4); // 小数点4桁で表示
-    }
-
-    // イベントリスナーを設定
-    inputValueEl.addEventListener('input', convertUnits);
-    inputUnitEl.addEventListener('change', convertUnits);
-    outputUnitEl.addEventListener('change', convertUnits);
-
-
-    // ページ読み込み時の初期設定
-    window.onload = () => {
-        showFeature('timer-section'); // タイマーを初期表示
-        updateCountdownDisplay(0); 
-        convertUnits(); // 単位変換の初期計算を実行
-    };
-</script>
-
-</body>
-</html>
+.converter-wrapper input, .converter-wrapper select {
+    flex: 1;
+    min-width: 100px;
+}
+/* 読み取り専用の出力欄の背景を少し暗く */
+#output-value {
+    background: #111; 
+    cursor: default;
+}
