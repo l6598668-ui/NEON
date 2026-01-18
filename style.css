@@ -8,7 +8,7 @@ body {
   font-family: sans-serif;
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* 画面いっぱいの高さ */
+  min-height: 100vh;
 }
 
 /* ヘッダー */
@@ -44,7 +44,7 @@ nav a {
 
 /* メインコンテンツ（真ん中） */
 main {
-  flex: 1; /* フッターを下に押し下げる設定 */
+  flex: 1;
   padding-top: 50px;
 }
 
@@ -52,6 +52,7 @@ h1 {
   border: 5px solid #0f0;
   padding: 20px;
   display: inline-block;
+  border-radius: 10px;
 }
 
 /* フッター */
@@ -64,4 +65,33 @@ footer {
 footer p {
   margin: 0;
   font-size: 14px;
+}
+
+/* タイマー機能のCSS */
+.timer-container {
+  margin-top: 40px;
+  background: #333;
+  padding: 20px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+#timer-display {
+  font-size: 48px;
+  margin-bottom: 15px;
+  color: #0f0;
+}
+
+button {
+  background: #0f0;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #fff;
 }
