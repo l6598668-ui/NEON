@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEON PORTAL</title>
-    <!-- ここで style.css を読み込みます -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -31,14 +30,30 @@
 </nav>
 
 <main>
-    <!-- タイマー機能セクション (初期表示) -->
+    <!-- タイマー機能セクション (ストップウォッチとカウントダウンを配置) -->
     <section id="timer-section" class="feature-content active">
-        <div class="timer-container">
-            <div id="timer-display">00:00</div>
-            <div class="timer-controls">
-                <button id="start-btn" class="feature-btn">スタート</button>
-                <button id="stop-btn" class="feature-btn">ストップ</button>
-                <button id="reset-btn" class="feature-btn">リセット</button>
+        <div class="timer-wrapper">
+            <!-- ストップウォッチエリア -->
+            <div class="timer-container stopwatch">
+                <h3>STOPWATCH</h3>
+                <div id="stopwatch-display" class="display">00:00</div>
+                <div class="timer-controls">
+                    <button id="sw-start-btn" class="feature-btn">スタート</button>
+                    <button id="sw-stop-btn" class="feature-btn">ストップ</button>
+                    <button id="sw-reset-btn" class="feature-btn">リセット</button>
+                </div>
+            </div>
+
+            <!-- カウントダウンエリア -->
+            <div class="timer-container countdown">
+                <h3>COUNTDOWN</h3>
+                <input type="number" id="countdown-input" placeholder="分数を入力" min="1" value="5">
+                <div id="countdown-display" class="display">05:00</div>
+                <div class="timer-controls">
+                    <button id="cd-start-btn" class="feature-btn">スタート</button>
+                    <button id="cd-stop-btn" class="feature-btn">ストップ</button>
+                    <button id="cd-reset-btn" class="feature-btn">リセット</button>
+                </div>
             </div>
         </div>
     </section>
@@ -59,7 +74,7 @@
 </main>
 
 <script>
-    // --- 機能切り替えロジック ---
+    // --- 機能切り替えロジック (変更なし) ---
     function showFeature(featureId) {
         const contents = document.querySelectorAll('.feature-content');
         contents.forEach(content => {
@@ -71,46 +86,102 @@
         }
     }
 
-    // --- タイマーロジック ---
-    let timerInterval = null;
-    let seconds = 0;
-    const timerDisplay = document.getElementById('timer-display');
-    const startBtn = document.getElementById('start-btn');
-    const stopBtn = document.getElementById('stop-btn');
-    const resetBtn = document.getElementById('reset-btn');
+    // --- ストップウォッチ ロジック ---
+    let swInterval = null;
+    let swSeconds = 0;
+    const swDisplay = document.getElementById('stopwatch-display');
+    const swStartBtn = document.getElementById('sw-start-btn');
+    const swStopBtn = document.getElementById('sw-stop-btn');
+    const swResetBtn = document.getElementById('sw-reset-btn');
 
-    function updateTimer() {
-        seconds++;
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        timerDisplay.textContent = 
+    function updateStopwatch() {
+        swSeconds++;
+        const mins = Math.floor(swSeconds / 60);
+        const secs = swSeconds % 60;
+        swDisplay.textContent = 
             `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
-    startBtn.addEventListener('click', () => {
-        if (!timerInterval) {
-            timerInterval = setInterval(updateTimer, 1000);
-            startBtn.disabled = true;
+    swStartBtn.addEventListener('click', () => {
+        if (!swInterval) {
+            swInterval = setInterval(updateStopwatch, 1000);
+            swStartBtn.disabled = true;
+        }
+    });
+    swStopBtn.addEventListener('click', () => {
+        clearInterval(swInterval);
+        swInterval = null;
+        swStartBtn.disabled = false;
+    });
+    swResetBtn.addEventListener('click', () => {
+        clearInterval(swInterval);
+        swInterval = null;
+        swSeconds = 0;
+        swDisplay.textContent = '00:00';
+        swStartBtn.disabled = false;
+    });
+
+    // --- カウントダウンタイマー ロジック (新規追加) ---
+    let cdInterval = null;
+    let cdSecondsRemaining = 0;
+    const cdInput = document.getElementById('countdown-input');
+    const cdDisplay = document.getElementById('countdown-display');
+    const cdStartBtn = document.getElementById('cd-start-btn');
+    const cdStopBtn = document.getElementById('cd-stop-btn');
+    const cdResetBtn = document.getElementById('cd-reset-btn');
+
+    function updateCountdownDisplay() {
+        const mins = Math.floor(cdSecondsRemaining / 60);
+        const secs = cdSecondsRemaining % 60;
+        cdDisplay.textContent = 
+            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    cdStartBtn.addEventListener('click', () => {
+        if (!cdInterval) {
+            // 入力値から秒数をセット
+            const minutes = parseInt(cdInput.value);
+            if (isNaN(minutes) || minutes <= 0) return;
+            
+            cdSecondsRemaining = minutes * 60;
+            updateCountdownDisplay();
+
+            cdInterval = setInterval(() => {
+                cdSecondsRemaining--;
+                if (cdSecondsRemaining < 0) {
+                    clearInterval(cdInterval);
+                    cdInterval = null;
+                    cdDisplay.textContent = "DONE!"; // 完了メッセージ
+                    // アラート音などをここで鳴らすことも可能
+                    cdStartBtn.disabled = false;
+                } else {
+                    updateCountdownDisplay();
+                }
+            }, 1000);
+            cdStartBtn.disabled = true;
         }
     });
 
-    stopBtn.addEventListener('click', () => {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        startBtn.disabled = false;
+    cdStopBtn.addEventListener('click', () => {
+        clearInterval(cdInterval);
+        cdInterval = null;
+        cdStartBtn.disabled = false;
     });
 
-    resetBtn.addEventListener('click', () => {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        seconds = 0;
-        timerDisplay.textContent = '00:00';
-        startBtn.disabled = false;
+    cdResetBtn.addEventListener('click', () => {
+        clearInterval(cdInterval);
+        cdInterval = null;
+        const minutes = parseInt(cdInput.value) || 0;
+        cdSecondsRemaining = minutes * 60;
+        updateCountdownDisplay();
+        cdStartBtn.disabled = false;
     });
+
 
     // ページ読み込み時の初期設定
     window.onload = () => {
         showFeature('timer-section'); // タイマーを初期表示
+        updateCountdownDisplay(); // カウントダウンの初期表示をセット
     };
 </script>
 
