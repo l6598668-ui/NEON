@@ -37,6 +37,9 @@
             <!-- ストップウォッチエリア -->
             <div class="timer-container stopwatch">
                 <h3>STOPWATCH</h3>
+                 <p class="timer-message">
+                    スタートで計測開始、一時停止で停止します。リセットで00:00に戻ります。
+                </p>
                 <div id="stopwatch-display" class="display">00:00</div>
                 <div class="timer-controls">
                     <button id="sw-start-btn" class="feature-btn">スタート</button>
@@ -48,6 +51,9 @@
             <!-- カウントダウンエリア -->
             <div class="timer-container countdown">
                 <h3>COUNTDOWN</h3>
+                <p class="timer-message">
+                    時間を設定し、スタートでカウントダウンを開始します。
+                </p>
                 <p class="input-message">※半角数字で入力またはプルダウン選択</p>
                 <div class="countdown-controls-top">
                     <div class="countdown-inputs">
@@ -77,8 +83,8 @@
     <section id="unit-converter" class="feature-content">
         <h2>UNIT CONVERTER</h2>
         <p class="converter-message">
-            **使い方:** 左側の入力欄に数値を入れて、単位をプルダウンで選択してください。<br>
-            結果は右側の入力欄に**有効数字5桁**で自動表示されます。（小数点以下の桁数は自動調整されます）
+            使い方: 左側の入力欄に数値を入れて、単位をプルダウンで選択してください。<br>
+            結果は右側の入力欄に有効数字5桁で自動表示されます。（小数点以下の桁数は自動調整されます）
         </p>
         <div class="converter-wrapper">
             <input type="number" id="input-value" class="feature-input" value="1" oninput="convertUnits()">
@@ -139,17 +145,153 @@
         }
     }
 
-    // --- ストップウォッチ ロジック (変更なし) ---
-    let swInterval = null; /* ... */
-    const swDisplay = document.getElementById('stopwatch-display'); /* ... */
-    // ... (イベントリスナーや関数は省略、前回のコードのままです) ...
+    // --- ストップウォッチ ロジック ---
+    let swInterval = null;
+    let swSeconds = 0;
+    const swDisplay = document.getElementById('stopwatch-display');
+    const swStartBtn = document.getElementById('sw-start-btn');
+    const swPauseBtn = document.getElementById('sw-pause-btn');
+    const swResetBtn = document.getElementById('sw-reset-btn');
 
-    // --- カウントダウンタイマー ロジック (変更なし) ---
-    let cdInterval = null; /* ... */
-    // ... (イベントリスナーや関数は省略、前回のコードのままです) ...
+    swStartBtn.addEventListener('click', () => {
+        if (!swInterval) {
+            swInterval = setInterval(updateStopwatch, 1000);
+            swStartBtn.disabled = true; 
+            swPauseBtn.disabled = false; 
+        }
+    });
+
+    swPauseBtn.addEventListener('click', () => {
+        if (swInterval) {
+            clearInterval(swInterval);
+            swInterval = null;
+            swStartBtn.disabled = false; 
+            swPauseBtn.disabled = true; 
+        }
+    });
+
+    swResetBtn.addEventListener('click', () => {
+        clearInterval(swInterval);
+        swInterval = null;
+        swSeconds = 0;
+        swDisplay.textContent = '00:00';
+        swStartBtn.disabled = false; 
+        swPauseBtn.disabled = true; 
+    });
+    
+    function updateStopwatch() {
+        swSeconds++;
+        const mins = Math.floor(swSeconds / 60);
+        const secs = swSeconds % 60;
+        swDisplay.textContent = 
+            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
 
 
-    // --- 単位変換ロジック (有効数字5桁に変更) ---
+    // --- カウントダウンタイマー ロジック ---
+    let cdInterval = null;
+    let cdSecondsRemaining = 0;
+    const cdMinutesInput = document.getElementById('countdown-minutes-input');
+    const cdSecondsInput = document.getElementById('countdown-seconds-input');
+    const cdPresetSelect = document.getElementById('countdown-preset');
+    const cdDisplay = document.getElementById('countdown-display');
+    const cdStartBtn = document.getElementById('cd-start-btn');
+    const cdPauseBtn = document.getElementById('cd-pause-btn');
+    const cdResetBtn = document.getElementById('cd-reset-btn');
+    
+    function enforceHalfWidthNumeric(event) {
+        let input = event.target;
+        input.value = input.value.replace(/[０-９]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        }).replace(/[^0-9]/g, '');
+        
+        const max = parseInt(input.max);
+        if (parseInt(input.value) > max) {
+            input.value = max;
+        }
+    }
+    cdMinutesInput.addEventListener('input', enforceHalfWidthNumeric);
+    cdSecondsInput.addEventListener('input', enforceHalfWidthNumeric);
+
+    cdPresetSelect.addEventListener('change', (event) => {
+        const totalSeconds = parseInt(event.target.value);
+        if (totalSeconds > 0) {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            cdMinutesInput.value = minutes;
+            cdSecondsInput.value = seconds;
+            updateCountdownDisplay(totalSeconds);
+            cdPresetSelect.value = 0; 
+        }
+    });
+
+
+    cdStartBtn.addEventListener('click', () => {
+        if (!cdInterval) {
+            if (cdSecondsRemaining <= 0) {
+                const minutes = parseInt(cdMinutesInput.value) || 0;
+                const seconds = parseInt(cdSecondsInput.value) || 0;
+                cdSecondsRemaining = minutes * 60 + seconds;
+                if (cdSecondsRemaining <= 0) return;
+            }
+
+            cdInterval = setInterval(tick, 1000);
+            cdStartBtn.disabled = true;
+            cdPauseBtn.disabled = false;
+            cdMinutesInput.disabled = true;
+            cdSecondsInput.disabled = true;
+            cdPresetSelect.disabled = true;
+        }
+    });
+
+    cdPauseBtn.addEventListener('click', () => {
+        if (cdInterval) {
+            clearInterval(cdInterval);
+            cdInterval = null;
+            cdStartBtn.disabled = false;
+            cdPauseBtn.disabled = true;
+        }
+    });
+
+    cdResetBtn.addEventListener('click', () => {
+        clearInterval(cdInterval);
+        cdInterval = null;
+        cdSecondsRemaining = 0;
+        updateCountdownDisplay(0); 
+        cdStartBtn.disabled = false;
+        cdPauseBtn.disabled = true;
+        cdMinutesInput.disabled = false;
+        cdSecondsInput.disabled = false;
+        cdPresetSelect.disabled = false;
+        cdMinutesInput.value = 0; 
+        cdSecondsInput.value = 0;
+    });
+    
+    function tick() {
+        cdSecondsRemaining--;
+        if (cdSecondsRemaining < 0) {
+            clearInterval(cdInterval);
+            cdInterval = null;
+            cdDisplay.textContent = "DONE!";
+            cdStartBtn.disabled = false;
+            cdPauseBtn.disabled = true;
+            cdMinutesInput.disabled = false;
+            cdSecondsInput.disabled = false;
+            cdPresetSelect.disabled = false;
+        } else {
+            updateCountdownDisplay(cdSecondsRemaining);
+        }
+    }
+    
+    function updateCountdownDisplay(secondsTotal) {
+        const mins = Math.floor(secondsTotal / 60);
+        const secs = secondsTotal % 60;
+        cdDisplay.textContent = 
+            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+
+    // --- 単位変換ロジック (有効数字5桁) ---
     const inputValueEl = document.getElementById('input-value');
     const inputUnitEl = document.getElementById('input-unit');
     const outputValueEl = document.getElementById('output-value');
@@ -170,7 +312,6 @@
         const valueInMeters = inputValue * conversionRates[inputUnit];
         const outputValue = valueInMeters / conversionRates[outputUnit];
 
-        // ここが変更点: toPrecision(5)で有効数字5桁に丸めてから表示
         outputValueEl.value = parseFloat(outputValue.toPrecision(5)).toString(); 
     }
     // イベントリスナーはHTMLタグの属性 (oninput, onchange) で設定済みです
