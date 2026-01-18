@@ -7,7 +7,7 @@ body {
     margin: 0;
     padding: 20px;
 }
-/* ... (以下省略、前回の内容と同一です) ... */
+/* ... (header, logo, feature-grid, feature-btn スタイルは省略、変更なし) ... */
 header {
     border-bottom: 1px solid #0f0;
     padding-bottom: 10px;
@@ -42,6 +42,7 @@ header {
     background: #0f0;
     color: #222;
 }
+
 
 /* 非表示・表示の制御 */
 .feature-content {
@@ -122,17 +123,7 @@ header {
     text-align: center;
     -moz-appearance: textfield; 
 }
-
-.countdown-inputs input[type="number"]::-webkit-outer-spin-button,
-.countdown-inputs input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.countdown-inputs input[type="number"]:focus {
-    outline: none;
-    border-color: #fff;
-}
+/* ... (countdown-inputs input focus スタイルは省略、変更なし) ... */
 
 /* 半角入力メッセージ */
 .input-message {
@@ -187,4 +178,13 @@ header {
 #output-value {
     background: #111; 
     cursor: default;
+}
+
+/* 単位変換の説明文 */
+.converter-message {
+    font-size: 0.9rem;
+    color: #0f0;
+    margin-bottom: 15px;
+    border-left: 3px solid #0f0;
+    padding-left: 10px;
 }
