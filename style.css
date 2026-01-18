@@ -31,6 +31,8 @@ a {
 
 main {
     margin-top: 20px;
+    position: relative; /* ★ここが重要: feature-contentの絶対位置の基準になる */
+    min-height: 400px; /* コンテンツエリアの最低限の高さを確保 */
 }
 
 /* --- 機能メニュー (nav) --- */
@@ -92,10 +94,20 @@ main {
     padding: 20px 0;
     background: rgba(0, 255, 0, 0.05); 
     border-radius: 5px;
+    
+    /* ★ここが重要: すべてのセクションを同じ開始位置(mainの左上)に配置 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
 .feature-content.active {
     display: block; /* activeクラスがついたものだけ表示 */
+    position: static; /* activeな時だけ通常の流れに戻すか、absoluteのままにするか選択 */
+    /* position: static; にするとmainのmin-heightが機能しなくなります。
+       position: absolute; のままにして、コンテンツの高さに合わせてmainの高さを調整するJSを入れるのが理想ですが、
+       ここではCSSのみで対応するため、一旦 absolute のままにします */
 }
 
 h2, h3 {
@@ -103,15 +115,8 @@ h2, h3 {
     margin-bottom: 15px;
     border-bottom: 1px dashed #0ff;
     padding-bottom: 5px;
+    margin-top: 0; /* タイトルの上マージンをリセットして揃える */
 }
-
-/* ★★★ 位置調整のための変更CSS ★★★ */
-/* コンテンツ量が少ないセクションのタイトルに、上部の余白を追加して位置を調整 */
-#rss-reader h2,
-#weather-api h2 {
-    margin-top: 10px; /* 値を小さくして、他のセクションと揃うように微調整 */
-}
-
 
 .timer-message, .converter-message {
     font-size: 0.9rem;
@@ -120,99 +125,16 @@ h2, h3 {
 }
 
 /* --- タイマーセクション固有のスタイル --- */
-.timer-wrapper {
-    display: flex;
-    gap: 20px; /* タイマー間の隙間 */
-    flex-wrap: nowrap; /* 画面が狭くても絶対に折り返さない */
-    justify-content: center;
-}
+/* (以下略 - 変更なし) */
+.timer-wrapper { display: flex; gap: 20px; flex-wrap: nowrap; justify-content: center; }
+.timer-container { flex: 1; min-width: 350px; text-align: center; min-height: 250px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #0f0; padding: 15px; border-radius: 5px; box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); }
+.display { font-size: 3rem; color: #0f0; min-height: 1.2em; display: flex; align-items: center; justify-content: center; margin: 15px 0; text-shadow: 0 0 10px #0f0; }
+.timer-controls { display: flex; justify-content: space-between; gap: 10px; margin-top: auto; }
+.countdown-controls-top { display: flex; justify-content: center; align-items: center; gap: 5px; margin-bottom: 10px; }
+.countdown-controls-top select { background: #333; border: 1px solid #0f0; color: #0f0; padding: 10px 5px; border-radius: 4px; font-size: 1rem; cursor: pointer; text-align: right; }
+.countdown-controls-top span { font-size: 0.9rem; margin-right: 5px; }
+.converter-wrapper { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+#output-value { background: #444; cursor: default; }
+.color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+.color-card { padding: 20px; text-align: center; border-radius: 5px; cursor: pointer; box-shadow: 0 0 10px rgba(255, 255, 255, 0.3) inset; }
 
-.timer-container {
-    flex: 1;
-    min-width: 350px; /* H:M:S が確実に入る幅を確保 */
-    text-align: center;
-    min-height: 250px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid #0f0;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
-}
-
-/* ディスプレイ表示部分 (00:00:00など) */
-.display {
-    font-size: 3rem; /* フォントサイズを調整 */
-    color: #0f0;
-    min-height: 1.2em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 15px 0;
-    text-shadow: 0 0 10px #0f0; /* ディスプレイも光らせる */
-}
-
-.timer-controls {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: auto;
-}
-
-/* カウントダウン入力欄のスタイル */
-.countdown-controls-top {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 10px;
-}
-
-/* select要素（プルダウン）のスタイル */
-.countdown-controls-top select {
-    background: #333;
-    border: 1px solid #0f0;
-    color: #0f0;
-    padding: 10px 5px;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    text-align: right;
-}
-
-/* ラベル (時間, 分, 秒) のスタイル */
-.countdown-controls-top span {
-    font-size: 0.9rem;
-    margin-right: 5px;
-}
-
-/* --- 単位変換セクション固有のスタイル --- */
-.converter-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-#output-value {
-    background: #444; /* 結果表示欄は少し暗く */
-    cursor: default;
-}
-
-/* --- ここから先は将来の機能のためのスタイル（HTML後半部分に対応） --- */
-
-/* カラーパレット */
-.color-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 10px;
-}
-
-.color-card {
-    padding: 20px;
-    text-align: center;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3) inset;
-}
