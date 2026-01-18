@@ -3,242 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEON PORTAL 2026 - Ultimate</title>
+    <title>NEON PORTAL</title>
     <style>
-        :root {
-            --neon-green: #0f0;
-            --neon-blue: #0ff;
-            --bg-dark: #0a0a0a;
-            --panel-bg: rgba(0, 255, 0, 0.05);
-        }
+        /* --- あなたのCSSをベースに復元 --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background: var(--bg-dark);
-            color: var(--neon-green);
-            font-family: 'Segoe UI', Consolas, sans-serif;
-            padding: 20px;
-            overflow-x: hidden;
-        }
-        header { text-align: center; border-bottom: 2px solid var(--neon-green); padding-bottom: 20px; margin-bottom: 30px; }
-        .logo { font-size: 3rem; text-shadow: 0 0 20px var(--neon-green); letter-spacing: 0.5rem; }
-
-        /* グリッドメニュー */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 15px;
-            margin-bottom: 40px;
-        }
+        body { background: #222; color: #0f0; font-family: 'Segoe UI', sans-serif; padding: 20px; }
+        header { border-bottom: 1px solid #0f0; padding-bottom: 10px; margin-bottom: 20px; }
+        .logo { text-align: center; font-size: 2.5rem; text-shadow: 0 0 10px rgba(0, 255, 0, 0.7); }
+        
+        .feature-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
         .feature-btn {
-            background: transparent;
-            border: 1px solid var(--neon-green);
-            color: var(--neon-green);
-            padding: 15px 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            text-transform: uppercase;
+            background: transparent; border: 1px solid #0f0; color: #0f0; padding: 10px 15px; cursor: pointer;
+            transition: all 0.3s ease; text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); box-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
         }
-        .feature-btn:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 15px var(--neon-green); }
-        .feature-btn.active-btn { border-color: var(--neon-blue); color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); }
+        .feature-btn:hover:not(:disabled) { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
+        .feature-btn:disabled { border-color: #050; color: #050; box-shadow: none; cursor: not-allowed; }
 
-        /* コンテンツ */
-        main { max-width: 1000px; margin: 0 auto; min-height: 500px; }
-        .feature-content { display: none; background: var(--panel-bg); padding: 30px; border-radius: 15px; border: 1px solid rgba(0,255,0,0.1); animation: slideUp 0.4s ease-out; }
+        main { position: relative; min-height: 400px; }
+        .feature-content {
+            display: none; padding: 20px; background: rgba(0, 255, 0, 0.05); border-radius: 5px;
+            border: 1px solid rgba(0, 255, 0, 0.1); margin-top: 20px;
+        }
         .feature-content.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        h2 { color: var(--neon-blue); border-left: 5px solid var(--neon-blue); padding-left: 15px; margin-bottom: 25px; }
+        h2, h3 { color: #0ff; margin-bottom: 15px; border-bottom: 1px dashed #0ff; }
+        .display { font-size: 3rem; color: #0f0; text-align: center; margin: 15px 0; text-shadow: 0 0 10px #0f0; }
+        .timer-controls, .converter-wrapper { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; align-items: center; }
         
-        /* 共通コンポーネント */
-        .display { font-size: 3.5rem; text-align: center; margin: 20px 0; text-shadow: 0 0 10px var(--neon-green); }
-        .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-        input, select, textarea { background: #1a1a1a; border: 1px solid var(--neon-green); color: var(--neon-green); padding: 10px; border-radius: 5px; }
-        
-        /* 計算機専用 */
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 300px; margin: 0 auto; }
-        
-        /* 色見本帳 */
-        .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 15px; }
-        .color-card { height: 80px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; transition: 0.2s; }
-        .color-card:hover { transform: scale(1.05); }
-
-        /* フラッシュカード */
-        .card-box { background: #111; border: 2px solid var(--neon-blue); height: 200px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; margin-bottom: 20px; }
+        .feature-input { background: #333; border: 1px solid #0f0; color: #0f0; padding: 8px; border-radius: 4px; }
+        .timer-message { font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <header><h1 class="logo">NEON PORTAL</h1></header>
 
-<nav class="feature-grid" id="nav-menu">
-    <button class="feature-btn" onclick="showFeature('timer')">Timer</button>
-    <button class="feature-btn" onclick="showFeature('unit')">Unit</button>
-    <button class="feature-btn" onclick="showFeature('calc')">Calc</button>
-    <button class="feature-btn" onclick="showFeature('colors')">Palette</button>
-    <button class="feature-btn" onclick="showFeature('picker')">Picker</button>
-    <button class="feature-btn" onclick="showFeature('flash')">Cards</button>
+<nav id="feature-menu">
+    <div class="feature-grid">
+        <button class="feature-btn" onclick="showFeature('timer-section')">タイマー</button>
+        <button class="feature-btn" onclick="showFeature('unit-converter')">単位変換</button>
+        <button class="feature-btn" onclick="showFeature('color-palette')">色見本帳</button>
+        <button class="feature-btn" onclick="showFeature('calculator')">計算機</button>
+        <button class="feature-btn" onclick="showFeature('rss-reader')">RSSリーダー</button>
+    </div>
 </nav>
 
 <main>
-    <!-- タイマー機能 -->
-    <section id="timer" class="feature-content">
-        <h2>TIMER & STOPWATCH</h2>
-        <div id="sw-display" class="display">00:00:00</div>
-        <div class="controls">
-            <button class="feature-btn" onclick="startSW()">Start</button>
-            <button class="feature-btn" onclick="stopSW()">Stop</button>
-            <button class="feature-btn" onclick="resetSW()">Reset</button>
+    <!-- タイマーセクション -->
+    <section id="timer-section" class="feature-content">
+        <h3>STOPWATCH</h3>
+        <p class="timer-message">スタートで計測開始、一時停止で停止します。</p>
+        <div id="stopwatch-display" class="display">00:00:00</div>
+        <div class="timer-controls">
+            <button id="sw-start-btn" class="feature-btn">スタート</button>
+            <button id="sw-pause-btn" class="feature-btn" disabled>一時停止</button>
+            <button id="sw-reset-btn" class="feature-btn">リセット</button>
         </div>
     </section>
 
-    <!-- 単位変換 -->
-    <section id="unit" class="feature-content">
+    <!-- 単位変換セクション -->
+    <section id="unit-converter" class="feature-content">
         <h2>UNIT CONVERTER</h2>
-        <div class="controls">
-            <input type="number" id="u-input" value="1" oninput="convert()">
-            <select id="u-from" onchange="convert()">
-                <option value="m">Meter</option>
-                <option value="km">km</option>
-                <option value="cm">cm</option>
-                <option value="inch">inch</option>
+        <div class="converter-wrapper">
+            <input type="number" id="input-value" class="feature-input" value="1">
+            <select id="input-unit" class="feature-input">
+                <option value="m">メートル (m)</option>
+                <option value="cm">センチ (cm)</option>
+                <option value="km">キロ (km)</option>
+                <option value="in">インチ (in)</option>
             </select>
             <span>=</span>
-            <input type="text" id="u-output" readonly>
-            <select id="u-to" onchange="convert()">
-                <option value="km">km</option>
-                <option value="m">m</option>
-                <option value="cm">cm</option>
-                <option value="inch">inch</option>
+            <input type="text" id="output-value" class="feature-input" readonly>
+            <select id="output-unit" class="feature-input">
+                <option value="km">キロ (km)</option>
+                <option value="m">メートル (m)</option>
+                <option value="cm">センチ (cm)</option>
             </select>
         </div>
     </section>
 
-    <!-- 計算機 -->
-    <section id="calc" class="feature-content">
-        <h2>CALCULATOR</h2>
-        <div id="calc-display" class="display" style="text-align: right; padding-right: 20px; background: #000;">0</div>
-        <div class="calc-grid">
-            <button class="feature-btn" onclick="calcPush('7')">7</button>
-            <button class="feature-btn" onclick="calcPush('8')">8</button>
-            <button class="feature-btn" onclick="calcPush('9')">9</button>
-            <button class="feature-btn" onclick="calcPush('/')">/</button>
-            <button class="feature-btn" onclick="calcPush('4')">4</button>
-            <button class="feature-btn" onclick="calcPush('5')">5</button>
-            <button class="feature-btn" onclick="calcPush('6')">6</button>
-            <button class="feature-btn" onclick="calcPush('*')">*</button>
-            <button class="feature-btn" onclick="calcPush('1')">1</button>
-            <button class="feature-btn" onclick="calcPush('2')">2</button>
-            <button class="feature-btn" onclick="calcPush('3')">3</button>
-            <button class="feature-btn" onclick="calcPush('-')">-</button>
-            <button class="feature-btn" onclick="calcPush('0')">0</button>
-            <button class="feature-btn" onclick="calcPush('.')">.</button>
-            <button class="feature-btn" onclick="calcClear()">C</button>
-            <button class="feature-btn" onclick="calcPush('+')">+</button>
-            <button class="feature-btn" style="grid-column: span 4;" onclick="calcExec()">=</button>
-        </div>
-    </section>
-
-    <!-- 色見本帳 -->
-    <section id="colors" class="feature-content">
-        <h2>COLOR PALETTE</h2>
-        <div class="color-grid" id="palette-box"></div>
-    </section>
-
-    <!-- ランダム出題 -->
-    <section id="picker" class="feature-content">
-        <h2>RANDOM PICKER</h2>
-        <textarea id="picker-items" style="width: 100%; height: 100px; margin-bottom: 15px;" placeholder="項目を改行で入力..."></textarea>
-        <div id="picker-result" class="display">???</div>
-        <div class="controls"><button class="feature-btn" onclick="runPicker()">Pick One!</button></div>
-    </section>
-
-    <!-- フラッシュカード -->
-    <section id="flash" class="feature-content">
-        <h2>FLASH CARDS</h2>
-        <div id="card-display" class="card-box" onclick="flipCard()">Click to Start</div>
-        <div class="controls">
-            <button class="feature-btn" onclick="nextCard()">Next Card</button>
-        </div>
-    </section>
+    <!-- 他のセクション（未実装） -->
+    <section id="color-palette" class="feature-content"><h2>COLOR PALETTE</h2><p>機能は未実装です</p></section>
+    <section id="calculator" class="feature-content"><h2>CALCULATOR</h2><p>機能は未実装です</p></section>
+    <section id="rss-reader" class="feature-content"><h2>RSSリーダー</h2><p>機能は未実装です</p></section>
 </main>
 
 <script>
-    // --- ページ制御 ---
-    function showFeature(id) {
-        document.querySelectorAll('.feature-content').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.querySelectorAll('.feature-btn').forEach(b => b.classList.remove('active-btn'));
-        event.currentTarget.classList.add('active-btn');
+    // --- 機能切り替え (あなたの元のロジック) ---
+    function showFeature(featureId) {
+        const sections = document.querySelectorAll('.feature-content');
+        sections.forEach(section => section.classList.remove('active'));
+        const target = document.getElementById(featureId);
+        if (target) target.classList.add('active');
     }
 
-    // --- ストップウォッチ ---
-    let time = 0, timerPtr = null;
-    function startSW() { if(!timerPtr) timerPtr = setInterval(() => { time++; updateSWDisp(); }, 1000); }
-    function stopSW() { clearInterval(timerPtr); timerPtr = null; }
-    function resetSW() { stopSW(); time = 0; updateSWDisp(); }
-    function updateSWDisp() {
-        const h = Math.floor(time/3600).toString().padStart(2,'0');
-        const m = Math.floor((time%3600)/60).toString().padStart(2,'0');
-        const s = (time%60).toString().padStart(2,'0');
-        document.getElementById('sw-display').textContent = `${h}:${m}:${s}`;
-    }
+    // --- ストップウォッチロジック ---
+    let swInterval = null, swSeconds = 0;
+    const swDisplay = document.getElementById('stopwatch-display');
+    const swStartBtn = document.getElementById('sw-start-btn');
+    const swPauseBtn = document.getElementById('sw-pause-btn');
 
-    // --- 単位変換 ---
-    const rates = { m:1, km:1000, cm:0.01, inch:0.0254 };
-    function convert() {
-        const val = parseFloat(document.getElementById('u-input').value) || 0;
-        const from = document.getElementById('u-from').value;
-        const to = document.getElementById('u-to').value;
-        document.getElementById('u-output').value = ((val * rates[from]) / rates[to]).toFixed(4);
-    }
-
-    // --- 計算機 ---
-    let calcVal = "";
-    function calcPush(v) { calcVal += v; document.getElementById('calc-display').textContent = calcVal; }
-    function calcClear() { calcVal = ""; document.getElementById('calc-display').textContent = "0"; }
-    function calcExec() { 
-        try { calcVal = eval(calcVal).toString(); document.getElementById('calc-display').textContent = calcVal; } 
-        catch { calcVal = ""; document.getElementById('calc-display').textContent = "Error"; }
-    }
-
-    // --- 色見本帳 ---
-    const colors = ["#FF0055", "#00FF99", "#00D4FF", "#FFCC00", "#9D00FF", "#FFFFFF", "#FF5733"];
-    const pBox = document.getElementById('palette-box');
-    colors.forEach(c => {
-        const div = document.createElement('div');
-        div.className = 'color-card';
-        div.style.backgroundColor = c;
-        div.textContent = c;
-        div.onclick = () => { navigator.clipboard.writeText(c); alert("Copied: " + c); };
-        pBox.appendChild(div);
-    });
-
-    // --- ランダム出題 ---
-    function runPicker() {
-        const items = document.getElementById('picker-items').value.split('\n').filter(i => i.trim() !== "");
-        if(items.length > 0) {
-            const picked = items[Math.floor(Math.random() * items.length)];
-            document.getElementById('picker-result').textContent = picked;
+    swStartBtn.onclick = () => {
+        if (!swInterval) {
+            swInterval = setInterval(() => {
+                swSeconds++;
+                const h = Math.floor(swSeconds / 3600).toString().padStart(2, '0');
+                const m = Math.floor((swSeconds % 3600) / 60).toString().padStart(2, '0');
+                const s = (swSeconds % 60).toString().padStart(2, '0');
+                swDisplay.textContent = `${h}:${m}:${s}`;
+            }, 1000);
+            swStartBtn.disabled = true; swPauseBtn.disabled = false;
         }
-    }
+    };
+    swPauseBtn.onclick = () => {
+        clearInterval(swInterval); swInterval = null;
+        swStartBtn.disabled = false; swPauseBtn.disabled = true;
+    };
+    document.getElementById('sw-reset-btn').onclick = () => {
+        clearInterval(swInterval); swInterval = null;
+        swSeconds = 0; swDisplay.textContent = '00:00:00';
+        swStartBtn.disabled = false; swPauseBtn.disabled = true;
+    };
 
-    // --- フラッシュカード ---
-    const deck = [
-        {q: "HTML", a: "HyperText Markup Language"},
-        {q: "CSS", a: "Cascading Style Sheets"},
-        {q: "JS", a: "JavaScript"}
-    ];
-    let cardIdx = 0, isFront = true;
-    function nextCard() { cardIdx = (cardIdx + 1) % deck.length; isFront = true; updateCard(); }
-    function flipCard() { isFront = !isFront; updateCard(); }
-    function updateCard() {
-        document.getElementById('card-display').textContent = isFront ? deck[cardIdx].q : deck[cardIdx].a;
-        document.getElementById('card-display').style.borderColor = isFront ? "#0ff" : "#f0f";
+    // --- 単位変換ロジック ---
+    const rates = { m: 1, cm: 0.01, km: 1000, in: 0.0254 };
+    function convert() {
+        const val = parseFloat(document.getElementById('input-value').value) || 0;
+        const from = document.getElementById('input-unit').value;
+        const to = document.getElementById('output-unit').value;
+        const result = (val * rates[from]) / rates[to];
+        document.getElementById('output-value').value = result.toPrecision(5);
     }
+    document.getElementById('input-value').oninput = convert;
+    document.getElementById('input-unit').onchange = convert;
+    document.getElementById('output-unit').onchange = convert;
 
-    // 初期起動
-    window.onload = () => { showFeature('timer'); convert(); updateCard(); };
+    // 初期表示
+    window.onload = () => { showFeature('timer-section'); convert(); };
 </script>
+
 </body>
 </html>
