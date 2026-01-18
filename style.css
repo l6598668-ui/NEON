@@ -1,157 +1,37 @@
-/* --- ネオンデザイン固定（style.cssの内容） --- */
+/* ... (既存のCSSは変更なし) ... */
 
-body {
-    background: #222; /* 黒に近い背景 */
-    color: #0f0;      /* ネオングリーン */
-    font-family: sans-serif;
-    margin: 0;
-    padding: 20px;
-}
-/* ... (header, logo, feature-grid, feature-btn スタイルは省略、変更なし) ... */
-header {
-    border-bottom: 1px solid #0f0;
-    padding-bottom: 10px;
-}
-
-.logo {
-    text-align: center;
-}
-
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.feature-btn {
-    background: #333;
-    padding: 10px 15px; 
-    border-radius: 8px;
-    border: 1px solid #0f0; 
-    font-weight: bold;
-    color: #0f0;
-    text-align: center;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-    flex: 1; /* ボタンの幅を均等に */
-    box-sizing: border-box;
-}
-
-.feature-btn:hover {
-    background: #0f0;
-    color: #222;
-}
-
-
-.feature-content {
-    display: none;
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid #0f0;
-    background: rgba(0, 255, 0, 0.05);
-}
-
-.feature-content.active {
-    display: block;
-}
-
-/* タイマー機能全体のラッパー */
-.timer-wrapper {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.timer-container {
-    flex: 1;
-    min-width: 280px; 
-    text-align: center;
-    min-height: 250px; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    /* セクションごとの区切り線 */
-    border: 1px solid #0f0; 
-    padding: 15px;
-}
-
-/* ディスプレイ表示部分の高さとマージンを揃える */
-.display {
-    font-size: 3rem;
-    color: #0f0;
-    /* 高さ固定で揃える */
-    min-height: 1.2em; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 15px 0;
-}
-
-.timer-controls {
-    display: flex;
-    justify-content: space-between; 
-    gap: 10px;
-    margin-top: auto; 
-}
-
-/* カウントダウン入力欄のスタイル */
-.countdown-controls-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-
-.countdown-inputs {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    /* flex: 1; を追加して幅を調整 */
-    flex: 1;
-}
-
-.countdown-inputs input[type="number"] {
+/* 新しい入力欄とプルダウンメニューの共通スタイル */
+.feature-input {
     background: #333;
     border: 1px solid #0f0;
     color: #0f0;
     padding: 10px;
-    width: 60px;
+    border-radius: 4px;
     font-size: 1rem;
-    text-align: center;
-    -moz-appearance: textfield; 
+    /* feature-btn のスタイルと合わせる */
+    box-sizing: border-box;
 }
 
-.countdown-inputs input[type="number"]::-webkit-outer-spin-button,
-.countdown-inputs input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.countdown-inputs input[type="number"]:focus {
+.feature-input:focus {
     outline: none;
     border-color: #fff;
 }
 
-/* 半角入力メッセージ */
-.input-message {
-    font-size: 0.8rem;
-    color: #0f0;
-    margin-bottom: 5px;
-    text-align: left;
+/* 単位変換セクションの配置 */
+.converter-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
-/* プルダウンメニューのスタイル */
-#countdown-preset {
-    /* feature-btn のスタイルを一部流用 */
-    background: #333;
-    border: 1px solid #0f0;
-    color: #0f0;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
+.converter-wrapper input, .converter-wrapper select {
     flex: 1;
+    min-width: 100px;
+}
+/* 読み取り専用の出力欄の背景を少し暗く */
+#output-value {
+    background: #111; 
+    cursor: default;
 }
