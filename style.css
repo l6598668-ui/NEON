@@ -1,61 +1,37 @@
-/* ... (既存のヘッダーやフッターのスタイルはそのまま) ... */
-
-/* ダークモードボタン */
+/* ダークモードボタンを右上に固定 */
 #dark-mode-toggle {
-    background: #fff;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-    cursor: pointer;
-    border: 2px solid #0f0;
-}
-
-/* 機能一覧メニュー */
-#feature-menu {
-    margin-top: 40px;
-}
-
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin: 20px;
-}
-
-.feature-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000; /* 一番手前に表示 */
     background: #333;
-    padding: 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
     color: #0f0;
-    transition: background 0.3s;
+    border: 2px solid #0f0;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
 }
 
-.feature-btn:hover {
-    background: #0f0;
-    color: #222;
-}
-
-/* 機能コンテンツのデフォルト非表示設定 */
-.feature-content {
-    display: none;
-}
-
-/* --- ダークモード有効時のスタイル --- */
-/* bodyに.dark-modeクラスが付くと適用される */
-body.dark-mode {
-    background: #fff;
-    color: #222;
-}
-
-body.dark-mode header, body.dark-mode footer, body.dark-mode .feature-btn, body.dark-mode .timer-container {
+/* ダークモード時のボタン色反転 */
+body.dark-mode #dark-mode-toggle {
     background: #eee;
     color: #222;
-    border-color: #f00; /* 例として赤に変更 */
+    border-color: #f00;
 }
 
-body.dark-mode a, body.dark-mode .logo, body.dark-mode #timer-display {
-    color: #f00; /* 例として赤に変更 */
+/* コンテンツの表示・非表示 */
+.feature-content {
+    display: none; /* 初期状態は全部消す */
+    padding: 20px;
+}
+
+/* 選択されたものだけ表示するためのクラス（JSで制御） */
+.feature-content.active {
+    display: block;
 }
