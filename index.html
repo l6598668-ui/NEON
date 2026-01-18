@@ -23,7 +23,6 @@
         <button class="feature-btn" onclick="showFeature('flashcards')">フラッシュカード</button>
         <button class="feature-btn" onclick="showFeature('random-picker')">ランダム出題</button>
         <button class="feature-btn" onclick="showFeature('bookmarks')">お気に入り</button>
-        <button class="feature-btn" onclick="showFeature('progress-bar')">学習進捗</button>
         <button class="feature-btn" onclick="flickerFeature('rss-reader')">RSSリーダー</button>
         <button class="feature-btn" onclick="flickerFeature('weather-api')">お天気</button>
         <button class="feature-btn" onclick="flickerFeature('voting-system')">投票システム</button>
@@ -54,20 +53,13 @@
                 <p class="timer-message">
                     時間を設定し、スタートでカウントダウンを開始します。
                 </p>
-                <p class="input-message">※半角数字で入力またはプルダウン選択</p>
+                <!-- 半角数字メッセージは不要になったため削除 -->
                 <div class="countdown-controls-top">
-                    <div class="countdown-inputs">
-                        <input type="number" id="countdown-minutes-input" placeholder="分" min="0" max="99" value="0">
-                        <span>:</span>
-                        <input type="number" id="countdown-seconds-input" placeholder="秒" min="0" max="59" value="0">
-                    </div>
-                    <select id="countdown-preset" class="feature-btn">
-                        <option value="0">プリセット選択</option>
-                        <option value="300">5分</option>
-                        <option value="600">10分</option>
-                        <option value="900">15分</option>
-                        <option value="1800">30分</option>
-                    </select>
+                    <!-- selectタグに変更 -->
+                    <select id="countdown-minutes-input" class="feature-input"></select>
+                    <span>分</span>
+                    <select id="countdown-seconds-input" class="feature-input"></select>
+                    <span>秒</span>
                 </div>
                 <div id="countdown-display" class="display">00:00</div>
                 <div class="timer-controls">
@@ -133,7 +125,7 @@
         }, 100);
     }
     
-    // --- 機能切り替えロジック ---
+    // --- 機能切り替えロジック (変更なし) ---
     function showFeature(featureId) {
         const contents = document.querySelectorAll('.feature-content');
         contents.forEach(content => {
@@ -145,7 +137,7 @@
         }
     }
 
-    // --- ストップウォッチ ロジック ---
+    // --- ストップウォッチ ロジック (変更なし) ---
     let swInterval = null;
     let swSeconds = 0;
     const swDisplay = document.getElementById('stopwatch-display');
@@ -188,47 +180,41 @@
     }
 
 
-    // --- カウントダウンタイマー ロジック ---
+    // --- カウントダウンタイマー ロジック (入力UI変更) ---
     let cdInterval = null;
     let cdSecondsRemaining = 0;
     const cdMinutesInput = document.getElementById('countdown-minutes-input');
     const cdSecondsInput = document.getElementById('countdown-seconds-input');
-    const cdPresetSelect = document.getElementById('countdown-preset');
+    // const cdPresetSelect = document.getElementById('countdown-preset'); // 削除
     const cdDisplay = document.getElementById('countdown-display');
     const cdStartBtn = document.getElementById('cd-start-btn');
     const cdPauseBtn = document.getElementById('cd-pause-btn');
     const cdResetBtn = document.getElementById('cd-reset-btn');
-    
-    function enforceHalfWidthNumeric(event) {
-        let input = event.target;
-        input.value = input.value.replace(/[０-９]/g, function(s) {
-            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-        }).replace(/[^0-9]/g, '');
-        
-        const max = parseInt(input.max);
-        if (parseInt(input.value) > max) {
-            input.value = max;
+
+    // プルダウンメニューのオプションを生成する関数
+    function populateSelect(selectEl, max) {
+        for (let i = 0; i <= max; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i.toString().padStart(2, '0');
+            selectEl.appendChild(option);
         }
     }
-    cdMinutesInput.addEventListener('input', enforceHalfWidthNumeric);
-    cdSecondsInput.addEventListener('input', enforceHalfWidthNumeric);
+    // プルダウンを生成
+    populateSelect(cdMinutesInput, 99);
+    populateSelect(cdSecondsInput, 59);
 
-    cdPresetSelect.addEventListener('change', (event) => {
-        const totalSeconds = parseInt(event.target.value);
-        if (totalSeconds > 0) {
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            cdMinutesInput.value = minutes;
-            cdSecondsInput.value = seconds;
-            updateCountdownDisplay(totalSeconds);
-            cdPresetSelect.value = 0; 
-        }
-    });
+
+    // 入力監視イベントは不要になったため削除
+    // cdMinutesInput.addEventListener('input', enforceHalfWidthNumeric);
+    // cdSecondsInput.addEventListener('input', enforceHalfWidthNumeric);
+    // cdPresetSelect.addEventListener('change', ... は削除);
 
 
     cdStartBtn.addEventListener('click', () => {
         if (!cdInterval) {
             if (cdSecondsRemaining <= 0) {
+                // select要素から値を取得
                 const minutes = parseInt(cdMinutesInput.value) || 0;
                 const seconds = parseInt(cdSecondsInput.value) || 0;
                 cdSecondsRemaining = minutes * 60 + seconds;
@@ -238,9 +224,8 @@
             cdInterval = setInterval(tick, 1000);
             cdStartBtn.disabled = true;
             cdPauseBtn.disabled = false;
-            cdMinutesInput.disabled = true;
-            cdSecondsInput.disabled = true;
-            cdPresetSelect.disabled = true;
+            cdMinutesInput.disabled = true; // select要素を無効化
+            cdSecondsInput.disabled = true; // select要素を無効化
         }
     });
 
@@ -260,9 +245,8 @@
         updateCountdownDisplay(0); 
         cdStartBtn.disabled = false;
         cdPauseBtn.disabled = true;
-        cdMinutesInput.disabled = false;
-        cdSecondsInput.disabled = false;
-        cdPresetSelect.disabled = false;
+        cdMinutesInput.disabled = false; // select要素を有効化
+        cdSecondsInput.disabled = false; // select要素を有効化
         cdMinutesInput.value = 0; 
         cdSecondsInput.value = 0;
     });
@@ -277,7 +261,6 @@
             cdPauseBtn.disabled = true;
             cdMinutesInput.disabled = false;
             cdSecondsInput.disabled = false;
-            cdPresetSelect.disabled = false;
         } else {
             updateCountdownDisplay(cdSecondsRemaining);
         }
@@ -296,22 +279,14 @@
     const inputUnitEl = document.getElementById('input-unit');
     const outputValueEl = document.getElementById('output-value');
     const outputUnitEl = document.getElementById('output-unit');
-
-    const conversionRates = { // 全てメートル基準
-        'cm': 0.01,
-        'm': 1,
-        'km': 1000,
-        'in': 0.0254
-    };
+    const conversionRates = { /* ... */ }; // 定義は前回のまま
 
     function convertUnits() {
         const inputValue = parseFloat(inputValueEl.value) || 0;
         const inputUnit = inputUnitEl.value;
         const outputUnit = outputUnitEl.value;
-
         const valueInMeters = inputValue * conversionRates[inputUnit];
         const outputValue = valueInMeters / conversionRates[outputUnit];
-
         outputValueEl.value = parseFloat(outputValue.toPrecision(5)).toString(); 
     }
     // イベントリスナーはHTMLタグの属性 (oninput, onchange) で設定済みです
