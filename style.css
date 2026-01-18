@@ -83,15 +83,28 @@ footer p {
 }
 
 button {
-  background: #0f0;
   border: none;
   padding: 10px 20px;
   margin: 5px;
   cursor: pointer;
   border-radius: 5px;
   font-weight: bold;
+  /* デフォルトは開始ボタンの色 */
+  background: #0f0;
+  color: #222;
 }
 
 button:hover {
-  background: #fff;
+  filter: brightness(1.2); /* ホバーで少し明るくする */
+}
+
+/* 一時停止ボタンの色 */
+#pause-button {
+    background: #ffeb3b; /* 黄色 */
+}
+
+/* リセットボタンの色 */
+#reset-button {
+    background: #f44336; /* 赤色 */
+    color: white;
 }
