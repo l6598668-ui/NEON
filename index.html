@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="style.css">
   <title>My Original site</title>
+  <script src="Javascript"></script>
 </head>
 <body>
 
@@ -12,30 +13,47 @@
     <nav>
       <ul>
         <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
+        <!-- 機能選択メニューへのリンク -->
+        <li><a href="#feature-menu">機能</a></li>
       </ul>
     </nav>
+    <!-- ダークモード切り替えボタン -->
+    <button id="dark-mode-toggle">🌓</button>
   </header>
 
   <main>
     <h1>成功！</h1>
     <p>Chromebookで作成中</p>
-    <p>ヘッダーとフッターがつきました！</p>
 
-    <!-- タイマー機能の場所 -->
-    <div class="timer-container">
-      <div id="timer-display">00:00</div>
-      <button id="start-button">開始</button>
-      <button id="pause-button">一時停止</button>
-      <button id="reset-button">リセット</button>
+    <!-- 機能選択メニューのセクション -->
+    <section id="feature-menu">
+        <h2>機能一覧</h2>
+        <div class="feature-grid">
+            <a href="#" id="calc-link" class="feature-btn">計算機</a>
+            <a href="#" id="timer-link" class="feature-btn">タイマー</a>
+            <a href="#" id="colors-link" class="feature-btn">色見本帳</a>
+            <a href="#" id="convert-link" class="feature-btn">単位変換</a>
+            <!-- 他の機能のボタンもここに追加していきます -->
+        </div>
+    </section>
+
+    <!-- タイマー機能の場所（既存） -->
+    <div id="timer-section" class="feature-content">
+        <div class="timer-container">
+          <div id="timer-display">00:00</div>
+          <button id="start-button">開始</button>
+          <button id="pause-button">一時停止</button>
+          <button id="reset-button">リセット</button>
+        </div>
     </div>
+    
+    <!-- 他の機能セクションはここに隠して追加 -->
+
   </main>
 
   <footer>
     <p>&copy; 2026 My Original Site</p>
   </footer>
 
-  <!-- JavaScriptの読み込み -->
-  <script src="Javascript"></script>
 </body>
 </html>
