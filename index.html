@@ -30,7 +30,6 @@
 </nav>
 
 <main>
-    <!-- タイマー機能セクション (ストップウォッチとカウントダウンを配置) -->
     <section id="timer-section" class="feature-content active">
         <div class="timer-wrapper">
             <!-- ストップウォッチエリア -->
@@ -47,12 +46,16 @@
             <!-- カウントダウンエリア -->
             <div class="timer-container countdown">
                 <h3>COUNTDOWN</h3>
-                <input type="number" id="countdown-input" placeholder="分数を入力" min="1" value="5">
-                <div id="countdown-display" class="display">05:00</div>
+                <div class="countdown-inputs">
+                    <input type="number" id="countdown-minutes-input" placeholder="分" min="0" max="99" value="0">
+                    <span>:</span>
+                    <input type="number" id="countdown-seconds-input" placeholder="秒" min="0" max="59" value="0">
+                </div>
+                <div id="countdown-display" class="display">00:00</div>
                 <div class="timer-controls">
                     <button id="cd-start-btn" class="feature-btn">スタート</button>
+                    <button id="cd-pause-btn" class="feature-btn" style="display: none;">一時停止</button>
                     <button id="cd-stop-btn" class="feature-btn">ストップ</button>
-                    <button id="cd-reset-btn" class="feature-btn">リセット</button>
                 </div>
             </div>
         </div>
@@ -86,7 +89,7 @@
         }
     }
 
-    // --- ストップウォッチ ロジック ---
+    // --- ストップウォッチ ロジック (変更なし) ---
     let swInterval = null;
     let swSeconds = 0;
     const swDisplay = document.getElementById('stopwatch-display');
@@ -121,14 +124,26 @@
         swStartBtn.disabled = false;
     });
 
-    // --- カウントダウンタイマー ロジック (新規追加) ---
+    // --- カウントダウンタイマー ロジック (新規追加・改善) ---
     let cdInterval = null;
     let cdSecondsRemaining = 0;
-    const cdInput = document.getElementById('countdown-input');
+    const cdMinutesInput = document.getElementById('countdown-minutes-input');
+    const cdSecondsInput = document.getElementById('countdown-seconds-input');
     const cdDisplay = document.getElementById('countdown-display');
     const cdStartBtn = document.getElementById('cd-start-btn');
+    const cdPauseBtn = document.getElementById('cd-pause-btn');
     const cdStopBtn = document.getElementById('cd-stop-btn');
-    const cdResetBtn = document.getElementById('cd-reset-btn');
+    let isPaused = false;
+
+    // 入力監視イベント: 半角数字以外を排除する
+    function enforceHalfWidthNumeric(event) {
+        // 全角数字を半角に変換し、数字以外を削除
+        event.target.value = event.target.value.replace(/[０-９]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        }).replace(/[^0-9]/g, '');
+    }
+    cdMinutesInput.addEventListener('input', enforceHalfWidthNumeric);
+    cdSecondsInput.addEventListener('input', enforceHalfWidthNumeric);
 
     function updateCountdownDisplay() {
         const mins = Math.floor(cdSecondsRemaining / 60);
@@ -137,51 +152,77 @@
             `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
-    cdStartBtn.addEventListener('click', () => {
-        if (!cdInterval) {
-            // 入力値から秒数をセット
-            const minutes = parseInt(cdInput.value);
-            if (isNaN(minutes) || minutes <= 0) return;
-            
-            cdSecondsRemaining = minutes * 60;
-            updateCountdownDisplay();
-
-            cdInterval = setInterval(() => {
-                cdSecondsRemaining--;
-                if (cdSecondsRemaining < 0) {
-                    clearInterval(cdInterval);
-                    cdInterval = null;
-                    cdDisplay.textContent = "DONE!"; // 完了メッセージ
-                    // アラート音などをここで鳴らすことも可能
-                    cdStartBtn.disabled = false;
-                } else {
-                    updateCountdownDisplay();
-                }
-            }, 1000);
-            cdStartBtn.disabled = true;
+    function startCountdown() {
+        if (isPaused) {
+            isPaused = false;
+            cdStartBtn.style.display = 'none';
+            cdPauseBtn.style.display = 'inline-block';
+            cdInterval = setInterval(tick, 1000);
+            return;
         }
-    });
 
-    cdStopBtn.addEventListener('click', () => {
+        clearInterval(cdInterval);
+        const minutes = parseInt(cdMinutesInput.value) || 0;
+        const seconds = parseInt(cdSecondsInput.value) || 0;
+        cdSecondsRemaining = minutes * 60 + seconds;
+
+        if (cdSecondsRemaining <= 0) return;
+
+        cdMinutesInput.disabled = true;
+        cdSecondsInput.disabled = true;
+        cdStartBtn.style.display = 'none';
+        cdPauseBtn.style.display = 'inline-block';
+
+        cdInterval = setInterval(tick, 1000);
+    }
+
+    function tick() {
+        cdSecondsRemaining--;
+        if (cdSecondsRemaining < 0) {
+            clearInterval(cdInterval);
+            cdInterval = null;
+            cdDisplay.textContent = "DONE!";
+            resetCountdownUI();
+            // ここでアラームを鳴らすなど
+        } else {
+            updateCountdownDisplay();
+        }
+    }
+
+    function pauseCountdown() {
+        clearInterval(cdInterval);
+        isPaused = true;
+        cdStartBtn.style.display = 'inline-block';
+        cdPauseBtn.style.display = 'none';
+    }
+
+    function stopCountdown() {
         clearInterval(cdInterval);
         cdInterval = null;
-        cdStartBtn.disabled = false;
-    });
-
-    cdResetBtn.addEventListener('click', () => {
-        clearInterval(cdInterval);
-        cdInterval = null;
-        const minutes = parseInt(cdInput.value) || 0;
-        cdSecondsRemaining = minutes * 60;
+        isPaused = false;
+        cdSecondsRemaining = 0;
         updateCountdownDisplay();
-        cdStartBtn.disabled = false;
-    });
+        resetCountdownUI();
+    }
+    
+    function resetCountdownUI() {
+        cdMinutesInput.disabled = false;
+        cdSecondsInput.disabled = false;
+        cdStartBtn.style.display = 'inline-block';
+        cdPauseBtn.style.display = 'none';
+        // 初期値に戻す
+        // cdMinutesInput.value = 0; 
+        // cdSecondsInput.value = 0;
+    }
 
+    cdStartBtn.addEventListener('click', startCountdown);
+    cdPauseBtn.addEventListener('click', pauseCountdown);
+    cdStopBtn.addEventListener('click', stopCountdown);
 
     // ページ読み込み時の初期設定
     window.onload = () => {
         showFeature('timer-section'); // タイマーを初期表示
-        updateCountdownDisplay(); // カウントダウンの初期表示をセット
+        updateCountdownDisplay();
     };
 </script>
 
