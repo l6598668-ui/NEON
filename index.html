@@ -1,21 +1,131 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #222; color: #0f0; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-header { border-bottom: 1px solid #0f0; padding-bottom: 10px; margin-bottom: 20px; }
-.logo { text-align: center; font-size: 2.5rem; text-shadow: 0 0 10px #0f0; }
-main { margin-top: 20px; position: relative; min-height: 400px; }
-.feature-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-.feature-btn {
-    background: transparent; border: 1px solid #0f0; color: #0f0; padding: 10px 15px; cursor: pointer;
-    transition: 0.3s; text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); box-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
-}
-.feature-btn:hover:not(:disabled) { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
-.feature-btn:disabled { border-color: #050; color: #050; box-shadow: none; cursor: not-allowed; }
-.feature-input { background: #333; border: 1px solid #0f0; color: #0f0; padding: 10px; border-radius: 4px; }
-.feature-content { display: none; padding: 20px 0; background: rgba(0, 255, 0, 0.05); border-radius: 5px; position: absolute; top: 0; left: 0; right: 0; }
-.feature-content.active { display: block; position: static; }
-h2, h3 { color: #0ff; margin-bottom: 15px; border-bottom: 1px dashed #0ff; padding-bottom: 5px; }
-.display { font-size: 3rem; color: #0f0; text-align: center; text-shadow: 0 0 10px #0f0; margin: 15px 0; }
-.timer-wrapper { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-.timer-container { flex: 1; min-width: 350px; border: 1px solid #0f0; padding: 15px; border-radius: 5px; text-align: center; }
-.timer-controls { display: flex; justify-content: center; gap: 10px; }
-.converter-wrapper { display: flex; align-items: center; gap: 10px; justify-content: center; flex-wrap: wrap; }
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON PORTAL</title>
+    <link rel="icon" href="mashiopi_favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1 class="logo">NEON PORTAL</h1>
+</header>
+
+<nav id="feature-menu">
+    <div class="feature-grid">
+        <button class="feature-btn" onclick="showFeature('timer-section')">タイマー</button>
+        <button class="feature-btn" onclick="showFeature('unit-converter')">単位変換</button>
+        <button class="feature-btn" onclick="showFeature('color-palette')">色見本帳</button>
+        <button class="feature-btn" onclick="showFeature('calculator')">計算機</button>
+        <button class="feature-btn" onclick="showFeature('study-counter')">学習記録</button>
+        <button class="feature-btn" onclick="showFeature('flashcards')">フラッシュカード</button>
+        <button class="feature-btn" onclick="showFeature('random-picker')">ランダム出題</button>
+        <button class="feature-btn" onclick="showFeature('bookmarks')">お気に入り</button>
+        <button class="feature-btn" onclick="showFeature('rss-reader')">RSSリーダー</button>
+        <button class="feature-btn" onclick="showFeature('weather-api')">お天気</button>
+        <button class="feature-btn" onclick="showFeature('voting-system')">投票システム</button>
+    </div>
+</nav>
+
+<main>
+    <section id="timer-section" class="feature-content active">
+        <div class="timer-wrapper">
+            <div class="timer-container stopwatch">
+                <h3>STOPWATCH</h3>
+                <p class="timer-message">スタートで計測開始、一時停止で停止します。リセットで00:00に戻ります。</p>
+                <div id="stopwatch-display" class="display">00:00:00</div>
+                <div class="timer-controls">
+                    <button id="sw-start-btn" class="feature-btn">スタート</button>
+                    <button id="sw-pause-btn" class="feature-btn" disabled>一時停止</button>
+                    <button id="sw-reset-btn" class="feature-btn">リセット</button>
+                </div>
+            </div>
+
+            <div class="timer-container countdown">
+                <h3>COUNTDOWN</h3>
+                <p class="timer-message">時間を設定し、スタートでカウントダウンを開始します。</p>
+                <div class="countdown-controls-top">
+                    <select id="countdown-hours-input" class="feature-input"></select>
+                    <select id="countdown-minutes-input" class="feature-input"></select>
+                    <select id="countdown-seconds-input" class="feature-input"></select>
+                </div>
+                <div id="countdown-display" class="display">00:00:00</div>
+                <div class="timer-controls">
+                    <button id="cd-start-btn" class="feature-btn">スタート</button>
+                    <button id="cd-pause-btn" class="feature-btn" disabled>一時停止</button>
+                    <button id="cd-reset-btn" class="feature-btn">リセット</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="unit-converter" class="feature-content">
+        <h2>UNIT CONVERTER</h2>
+        <div class="converter-wrapper">
+            <input type="number" id="input-value" class="feature-input" value="1" oninput="convertUnits()">
+            <select id="input-unit" class="feature-input" onchange="convertUnits()">
+                <option value="cm">センチメートル (cm)</option>
+                <option value="m">メートル (m)</option>
+                <option value="km">キロメートル (km)</option>
+                <option value="in">インチ (in)</option>
+            </select>
+            <span>=</span>
+            <input type="text" id="output-value" class="feature-input" readonly>
+            <select id="output-unit" class="feature-input" onchange="convertUnits()">
+                <option value="cm">センチメートル (cm)</option>
+                <option value="m">メートル (m)</option>
+                <option value="km">キロメートル (km)</option>
+                <option value="in">インチ (in)</option>
+            </select>
+        </div>
+    </section>
+
+    <section id="weather-api" class="feature-content">
+        <h2>WEATHER REPORT</h2>
+        <div class="converter-wrapper" style="margin-bottom: 20px;">
+            <input type="text" id="city-input" class="feature-input" placeholder="都市名 (例: 東京)" style="flex: 1;">
+            <button class="feature-btn" onclick="getWeatherByCity()">検索</button>
+            <button class="feature-btn" onclick="getWeather()">現在地</button>
+        </div>
+        <div class="timer-wrapper" style="gap: 15px; flex-direction: column;">
+            <div class="timer-container" style="width: 100%; min-height: 150px;">
+                <h3 id="weather-location" style="border:none;">場所: --</h3>
+                <div id="weather-display" class="display" style="font-size: 2.5rem; margin: 10px 0;">--°C</div>
+                <div id="weather-desc">準備完了</div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%;">
+                <div class="timer-container" style="min-height: 110px; min-width: auto; padding: 10px;">
+                    <div>明日</div>
+                    <div id="forecast-1-icon" style="font-size: 1.5rem; margin: 5px 0;">--</div>
+                    <div id="forecast-1-temp" style="color: #0f0;">--°C</div>
+                </div>
+                <div class="timer-container" style="min-height: 110px; min-width: auto; padding: 10px;">
+                    <div>明後日</div>
+                    <div id="forecast-2-icon" style="font-size: 1.5rem; margin: 5px 0;">--</div>
+                    <div id="forecast-2-temp" style="color: #0f0;">--°C</div>
+                </div>
+                <div class="timer-container" style="min-height: 110px; min-width: auto; padding: 10px;">
+                    <div>3日後</div>
+                    <div id="forecast-3-icon" style="font-size: 1.5rem; margin: 5px 0;">--</div>
+                    <div id="forecast-3-temp" style="color: #0f0;">--°C</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="color-palette" class="feature-content"><h2>COLOR PALETTE</h2></section>
+    <section id="calculator" class="feature-content"><h2>CALCULATOR</h2></section>
+    <section id="study-counter" class="feature-content"><h2>STUDY COUNTER</h2></section>
+    <section id="flashcards" class="feature-content"><h2>FLASHCARDS</h2></section>
+    <section id="random-picker" class="feature-content"><h2>RANDOM PICKER</h2></section>
+    <section id="bookmarks" class="feature-content"><h2>BOOKMARKS</h2></section>
+    <section id="rss-reader" class="feature-content"><h2>RSSリーダー</h2></section>
+    <section id="voting-system" class="feature-content"><h2>VOTING SYSTEM</h2></section>
+    <section id="progress-bar" class="feature-content"><h2>PROGRESS BAR</h2></section>
+</main>
+
+<script src="Javascript"></script>
+</body>
+</html>
