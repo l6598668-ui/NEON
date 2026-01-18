@@ -29,11 +29,13 @@ h2, h3 { color: #0ff; margin-bottom: 15px; border-bottom: 1px dashed #0ff; paddi
 .converter-wrapper { display: flex; align-items: center; gap: 10px; justify-content: center; flex-wrap: wrap; }
 
 footer {
-    margin-top: 30px;      /* メインコンテンツとの間隔を少し狭く */
-    padding: 10px 0;       /* 上下の余白を半分に縮小 */
+    margin-top: 50px;
+    padding: 20px;
+    padding-bottom: 5px; /* ここで下の余白だけを小さく調整 */
     border-top: 1px solid #0f0;
     text-align: center;
-    font-size: 0.7rem;     /* 文字を少し小さく */
-    color: #050;           /* 文字色を少し暗めにして主張を抑える */
-    text-shadow: none;     /* 光彩を消してシンプルに */
+    font-size: 0.8rem;
+    color: #0f0;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
 }
+
