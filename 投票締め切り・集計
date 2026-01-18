@@ -1,0 +1,11 @@
+  workflow_dispatch:
+
+jobs:
+  total:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 結果を集計
+        run: |
+          echo "--- 投票結果 ---"
+          sort results.txt | uniq -c
