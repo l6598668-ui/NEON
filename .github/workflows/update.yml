@@ -3,7 +3,7 @@ name: Update News
 on:
   schedule:
     - cron: '0 0 * * *' # 毎日JST 9時に自動実行
-  workflow_dispatch:   # 手動で「Run workflow」ボタンからも実行可能
+  workflow_dispatch:   # 手動実行ボタン用
 
 jobs:
   build:
@@ -16,16 +16,18 @@ jobs:
 
       - name: Fetch and Update News
         run: |
-          # 1. 一時ファイルを作成して時刻を書き込む（上書き）
+          # 1. 時刻を日本時間で作成（上書き >）
           echo "最終更新: $(date -d '9 hours' +'%Y/%m/%d %H:%M')" > news_temp.txt
           
-          # 2. RSSからタイトルとURLを抽出して一時ファイルに追記
-          curl -sL https://news.yahoo.co.jp | \
+          # 2. 正しいURLからタイトルとリンクを抽出して追記（>>）
+          # ※ tail -n +3 は、RSSのヘッダー部分を除外するためです
+          curl -sL https://news.yahoo.co.jp/rss/topics/top-picks.xml | \
           grep -oE '<title>.*</title>|<link>.*</link>' | \
           sed -e 's/<[^>]*>//g' | \
           tail -n +3 >> news_temp.txt
           
-          # 3. 本番のファイルへ上書き
+          # 3. フォルダを確保して本番ファイルへ上書き
+          mkdir -p NewsTyping
           mv news_temp.txt NewsTyping/news.txt
 
       - name: Commit and Push
