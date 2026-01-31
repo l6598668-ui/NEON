@@ -1,39 +1,10 @@
-name: Update News
-
-on:
-  schedule:
-    - cron: '0 0 * * *' # 毎日JST 9時に実行
-  workflow_dispatch:   # 手動実行ボタン用
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Fetch and Update News
         run: |
-          # ① 一時ファイル作成（上書き > ）
-          echo "最終更新: $(date -d '9 hours' +'%Y/%m/%d %H:%M')" > news_temp.txt
+          # 1. 最終更新日時を変数に入れる
+          UPDATED_AT="最終更新: $(date -d '9 hours' +'%Y/%m/%d %H:%M')"
           
-          # ② RSS取得（追記 >> ）
-          curl -s https://news.yahoo.co.jp | \
-          grep -oE '<title>.*</title>|<link>.*</link>' | \
-          sed -e 's/<[^>]*>//g' | \
-          tail -n +3 >> news_temp.txt
+          # 2. RSSからタイトルとリンクを抽出し、変数にまとめる
+          NEWS_LIST=$(curl -s https://news.yahoo.co.jp | grep -oE '<title>.*</title>|<link>.*</link>' | sed -e 's/<[^>]*>//g' | tail -n +3)
           
-          # ③ 本番ファイルへ上書き
-          mv news_temp.txt NewsTyping/news.txt
-
-      - name: Commit and Push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add NewsTyping/news.txt
-          if ! git diff --staged --quiet; then
-            git commit -m "Update news $(date +'%Y-%m-%d %H:%M')"
-            git push
-          fi
+          # 3. 最後に一気にファイルへ書き込む（ここで上書き > ）
+          printf "%s\n%s\n" "$UPDATED_AT" "$NEWS_LIST" > NewsTyping/news.txt
