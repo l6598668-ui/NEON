@@ -75,8 +75,8 @@ h1 {
     border-bottom: 3px solid var(--brand-yellow); 
     padding: 10px 20px;
 
-    display: flex;
-    justify-content: space-between;
+    display: flex !important;
+    justify-content: space-between !important;
     align-items: center;
 }
 
@@ -85,12 +85,11 @@ h1 {
     text-decoration: none;
     font-size: 14px;
     font-weight: bold;
-    padding: 5px 10px;
-    border: 1px solid var(--brand-yellow);
-    border-radius: 5px;
+    flex-shrink: 0;
+}
 
 .header-links {
-    display: flex;
+    display: flex !important;
     align-items: center;
     gap: 20px;
 }
