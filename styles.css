@@ -118,13 +118,17 @@ main, .main-content {
 
 
 .faq-section {
+　width: 100%;
   max-width: 800px;
   margin: 20px auto;
   padding: 0 20px;
+  box-sizing: border-box;
   font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
 }
 
 .faq-section details {
+  width: 100%;
+  box-sizing: border-box;
   border: 1px solid #eee;
   border-radius: 8px; 
   margin-bottom: 15px; 
@@ -132,6 +136,7 @@ main, .main-content {
   background-color: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  overflow: hidden;
 }
 
 .faq-section details[open] {
