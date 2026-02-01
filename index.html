@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>メンテナンス</title>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-QCY3N22YKQ"></script>
+<script async src="https://www.googletagmanager.com"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -15,17 +15,27 @@
 </script>
     
     <style>
+        
+          .twitter-post-container {
+          max-width: 500px;
+          margin: 0 auto;
+          padding: 0 20px;
+        }
+
+      
         :root {
             --bg-color: #f0f2f5;
             --card-color: #ffffff;
             --text-color: #333;
             --accent-color: #007bff;
+            --brand-black: #000000;
+            --brand-yellow: #FFEB00;
         }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             background: var(--bg-color); 
-            margin: 0; 
-            padding: 20px; 
+            margin: 0;
+            padding: 0;
             color: var(--text-color);
         }
         h1 { text-align: center; margin-bottom: 30px; font-weight: 300; }
@@ -57,9 +67,28 @@
         .menu-item:active { transform: scale(0.9); background: #eef; }
         .menu-item i { font-size: 32px; margin-bottom: 8px; font-style: normal; }
         .menu-item span { font-size: 11px; font-weight: bold; }
+
+        .site-header {
+            background-color: var(--brand-black);
+            border-bottom: 3px solid var(--brand-yellow); 
+            padding: 10px 20px;
+            text-align: right;
+        }
+        .x-icon-link {
+            color: var(--brand-yellow);
+            font-size: 24px;
+            text-decoration: none;
+        }
+
     </style>
 </head>
 <body>
+
+    <header class="site-header">
+        <a href="https://x.com/Brandmaker_Now" target="_blank" rel="noopener noreferrer" class="x-icon-link">
+            公式𝕏をフォローする
+        </a>
+    </header>
 
     <h1>アプリ一覧</h1>
 
@@ -68,5 +97,11 @@
         <a href="NewsTyping/NewsTyping.html" class="menu-item"><i>⌨️</i><span>NewsTyping</span></a>
     </div>
 
+        <!-- ここから追加: Xの埋め込みポストエリア -->
+    <div class="twitter-post-container">
+      <a class="twitter-timeline" href="https://twitter.com/Brandmaker_Now?ref_src=twsrc%5Etfw">Tweets by Brandmaker_Now</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
+  
 </body>
 </html>
+
