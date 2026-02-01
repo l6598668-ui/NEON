@@ -4,23 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>お問い合わせページ</title>
+    
     <style>
+        :root {
+            --bg-color: #eeeeee;
+            --card-color: #ffffff;
+            --text-color: #333;
+            --accent-color: #007bff;
+            --brand-black: #000000;
+            --brand-yellow: #FFEB00;
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background: var(--bg-color); 
+            margin: 0;
+            padding: 0 10px;
+            color: var(--text-color);
+        }
+        .site-header {
+            background-color: var(--brand-black);
+            border-bottom: 3px solid var(--brand-yellow); 
+            padding: 10px 20px;
+        }
+        .header-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .contact-link, .back-link {
+            color: var(--brand-yellow);
+            text-decoration: none;
+            font-size: 14px; 
+            font-weight: bold;
+            padding: 5px 10px;
+            border: 1px solid var(--brand-yellow);
+            border-radius: 5px;
+        }
+        .x-icon-link {
+            color: var(--brand-yellow);
+            text-decoration: none;
+            font-size: 14px; 
+            font-weight: bold;
+        }
         .contact-container {
             max-width: 800px;
             margin: 40px auto;
             padding: 0 20px;
         }
-
         .contact-container iframe {
             width: 100%; 
             height: 800px; 
             border: none;
         }
+        .policy-message {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
+    <header class="site-header">
+        <div class="header-links">
+            <a href="index.html" class="back-link">← ホームへ戻る</a>
+            <div>
+                <a href="#" class="contact-link">お問い合わせ</a> 
+                <a href="https://x.com/Brandmaker_Now" target="_blank" rel="noopener noreferrer" class="x-icon-link">
+                    公式𝕏をフォローする
+                </a>
+            </div>
+        </div>
+    </header>
 
-    <div class="contact-container">
+    <div class="policy-message">
+        <strong>コンテンツポリシー</strong><br>
+        本サイトでは、誹謗中傷、嫌がらせ、攻撃的な内容を含むお問い合わせやコメントは受け付けておりません。<br>
+        上記に該当する内容につきましては、返信いたしかねます。<br>
+        場合によっては、適切な対処を講じる場合がございますので、予めご了承ください。
+    </div>
+
+     <div class="contact-container">
         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScbQcfHdhsXRg5_gUSgrkmgGZxUr44krFUEDaA9XU356dvCKQ/viewform?embedded=true" width="640" height="1119" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>
     </div>
 
