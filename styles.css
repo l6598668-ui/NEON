@@ -77,14 +77,6 @@ footer a { color: var(--card-color) !important; text-decoration: none; }
 
 @media (max-width: 480px) { .faq-section { width: 90%; } }
 
-html, body {
-    background-color: var(--bg-color);
-}
+html, body { background-color: var(--bg-color); }
 
-main, .main-content {
-    background-color: var(--card-color);
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-}
+main, .main-content { background-color: var(--card-color); max-width: 800px; margin: 0 auto; padding: 20px; box-sizing: border-box; width: 100%; }
