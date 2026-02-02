@@ -1,1 +1,1 @@
-const newsData = [{ date: '2026-02-03', category: 'メンテナンス', title: 'サーバーメンテナンス実施中', pinned: true, folder: '2026-02-03-maintenance' }, { date: '2026-02-02', category: 'その他', title: '新しいサービスを開始しました！', folder: '2026-02-02-new-service' }, { date: '2026-01-20', category: 'その他', title: '期間限定キャンペーン', isFinished: true, folder: '2026-01-20-campaign' }, { date: '2026-01-10', category: 'その他', title: '通常のお知らせ', folder: '2026-01-10-info' }];
+
