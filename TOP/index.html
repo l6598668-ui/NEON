@@ -61,9 +61,17 @@
 </footer>
 
     <!-- ここで外部のデータを読み込む -->
-    <script src="information/news-data.js"></script>
+<script>
+ const newsData = [
+        {
+            date: "2026-02-02",
+            category: "メンテナンス",
+            title: "メンテナンスについて",
+            folder: "maint-01",
+            pinned: false,
+            isFinished: false
+        }
 
-    <script>
         function displayNews(filter = 'すべて', keyword = '') {
             const list = document.getElementById('newsList');
             const today = new Date();
