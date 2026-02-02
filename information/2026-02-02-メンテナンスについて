@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- styles.cssが2階層上にある場合の指定 -->
+    <link rel="stylesheet" href="../../../styles.css">
+    <title>お知らせ詳細 | BrandMaker.now</title>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-links">
+            <a href="../../../" class="contact-link">ホームへ戻る</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="breadcrumb">
+            <ol>
+                <li><a href="../../../">HOME</a></li>
+                <li><a href="../../">お知らせ一覧</a></li>
+                <li>詳細</li>
+            </ol>
+        </div>
+
+        <article class="news-detail">
+            <div class="news-meta">
+                <span class="date">2026-02-03</span>
+                <span class="category maintenance">メンテナンス</span>
+            </div>
+            <h1>ここにタイトルを書く</h1>
+            <div class="news-content">
+                ここに本文を書きます。<br>
+                改行も自由に入れられます。
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="copyright">&copy; BrandMaker.now. All right reserved.</div>
+    </footer>
+</body>
+</html>
