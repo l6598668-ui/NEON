@@ -99,15 +99,17 @@
                     const newBadge = (diffDays >= 0 && diffDays < 3) ? '<span class="new-badge">NEW</span>' : '';
                     const catClass = item.category === 'メンテナンス' ? 'maintenance' : 'other';
 
-                    li.innerHTML = `
-                        <a href="#">
-                            <span class="date">${item.date}</span>
-                            <span class="category ${catClass}">${item.category}</span>
-                            <span class="status-text">${statusText}</span>
-                            <span class="title">${item.title}</span>
-                            ${newBadge}
-                        </a>
-                    `;
+                    // 3のJavaScript内、li.innerHTMLの部分をこれに書き換え
+li.innerHTML = `
+    <a href="${item.folder}/">
+        <span class="date">${item.date}</span>
+        <span class="category ${catClass}">${item.category}</span>
+        <span class="status-text">${statusText}</span>
+        <span class="title">${item.title}</span>
+        ${newBadge}
+    </a>
+`;
+
                     list.appendChild(li);
                     count++;
                 }
