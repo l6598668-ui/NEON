@@ -1,1 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles.css">
+    <title>お知らせ一覧 | BrandMaker.now</title>
+</head>
+<body>
 
+    <header class="site-header">
+        <div class="header-links">
+            <a href="../" class="contact-link">ホームへ戻る</a>
+        </div>
+    </header>
+
+<main>
+    <div class="breadcrumb">
+        <ol>
+            <li><a href="../">HOME</a></li>
+            <li>お知らせ一覧</li>
+        </ol>
+    </div>
+
+    <h1>お知らせ一覧</h1>
+
+    <div class="news-wrapper">
+        <div class="search-area">
+            <input type="text" id="searchInput" placeholder="キーワードで検索...">
+            <button id="searchButton">検索</button> 
+        </div>
+
+        <div class="news-border-box">
+            <div class="news-header">
+                <h2 class="news-title">すべてのお知らせ</h2>
+                <div class="filter-buttons">
+                    <button onclick="filterCategory('すべて')" class="cat-btn active">すべて</button>
+                    <button onclick="filterCategory('メンテナンス')" class="cat-btn">メンテナンス</button>
+                    <button onclick="filterCategory('その他')" class="cat-btn">その他</button>
+                </div>
+            </div>
+            <ul class="news-list" id="newsList"></ul>
+        </div>
+        <div class="pagination">
+            合計：<span id="totalCount">0</span> 件
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="copyright">&copy; BrandMaker.now. All right reserved.</div>
+</footer>
+
+    <!-- データを読み込む（同じフォルダにあるので news-data.js） -->
+    <script src="news-data.js"></script>
+
+    <script>
+        function displayNews(filter = 'すべて', keyword = '') {
+            const list = document.getElementById('newsList');
+            const today = new Date();
+            let count = 0;
+            list.innerHTML = '';
+
+            // 日付順にソート（ピン留め優先）
+            const sortedData = [...newsData].sort((a, b) => {
+                if (a.pinned !== b.pinned) return b.pinned ? -1 : 1;
+                return new Date(b.date) - new Date(a.date);
+            });
+
+            // フィルターと検索のみ実行（.slice(0, 5) を削除したので全件出ます）
+            const filteredData = sortedData.filter(item => {
+                const matchCat = (filter === 'すべて' || item.category === filter);
+                const matchKey = item.title.includes(keyword);
+                return matchCat && matchKey;
+            });
+
+            filteredData.forEach(item => {
+                const postDate = new Date(item.date);
+                const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
+                
+                const li = document.createElement('li');
+                li.className = 'news-item';
+                
+                if (item.isFinished) { li.classList.add('is-finished'); } 
+                else if (item.pinned) { li.classList.add('is-pinned'); }
+                
+                let statusText = '';
+                if (item.pinned) { statusText = '【対応中】'; }
+                else if (item.isFinished) { statusText = '【終了】'; }
+
+                const newBadge = (diffDays >= 0 && diffDays < 3) ? '<span class="new-badge">NEW</span>' : '';
+                const catClass = item.category === 'メンテナンス' ? 'maintenance' : 'other';
+
+                // 各詳細フォルダへ飛ぶリンク（同じ階層のフォルダなので ./フォルダ名/）
+                li.innerHTML = `
+                    <a href="./${item.folder}/">
+                        <span class="date">${item.date}</span>
+                        <span class="category ${catClass}">${item.category}</span>
+                        <span class="status-text">${statusText}</span>
+                        <span class="title">${item.title}</span>
+                        ${newBadge}
+                    </a>
+                `;
+                list.appendChild(li);
+                count++;
+            });
+            document.getElementById('totalCount').innerText = count;
+        }
+
+        function filterCategory(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.toggle('active', btn.innerText === cat));
+            displayNews(cat, document.getElementById('searchInput').value);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const activeCat = document.querySelector('.cat-btn.active').innerText;
+            displayNews(activeCat, e.target.value);
+        });
+
+        document.getElementById('searchButton').addEventListener('click', () => {
+            const activeCat = document.querySelector('.cat-btn.active').innerText;
+            displayNews(activeCat, document.getElementById('searchInput').value);
+        });
+        
+        displayNews();
+    </script>
+</body>
+</html>
