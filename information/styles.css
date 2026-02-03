@@ -17,7 +17,7 @@ body { font-family: 'メイリオ', Meiryo, sans-serif; line-height: 1.6; color:
 
 .article-body p { margin-bottom: 1em; }
 
-.article-body strong { color: #31708f; font-weight: normal; }
+.article-body strong { font-weight: bold; }
 
 :root { --bg-color: #f0f2f5; --card-color: #ffffff; --text-color: #333; --accent-color: #FFD700; --brand-black: #002F27; --brand-yellow: #FFD700; }
 
