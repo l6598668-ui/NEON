@@ -5,16 +5,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="../styles.css">
-<title>システムメンテナンスについて</title>
+<title>お知らせ一覧</title>
 </head>
 
 <body>
 
 <header class="site-header">
-<div></div> 
 <div class="header-links">
-<a href="../../Q&A/" class="contact-link">Q&A</a>
-<a href="../../Contact/" class="contact-link">お問い合わせ</a>
+<a href="../Q&A/" class="contact-link">Q&A</a>
+<a href="../Contact/" class="contact-link">お問い合わせ</a>
 <a href="https://x.com/Brandmaker_Now" target="_blank" rel="noopener noreferrer" class="x-icon-link">
 公式𝕏をフォローする
 </a>
@@ -25,59 +24,113 @@
 
 <nav class="breadcrumb">
 <ol>
-<li><a href="../../TOP/">HOME</a></li>
-<li><a href="../../information/">お知らせ</a></li>
-<li>システムメンテナンスについて</li>
+<li><a href="../TOP/">HOME</a></li>
+<li><a href="../information/">お知らせ</a></li>
+<li>お知らせ一覧</li>
 </ol>
 </nav>
 
-<main class="main-content">
+<h1>お知らせ一覧</h1>
 
-<div class="main-header-area">
-<h1 class="page-title">お知らせ</h1>
-<hr class="header-line-separator"> 
+<div class="news-wrapper">
+<div class="search-area">
+<input type="text" id="searchInput" placeholder="キーワードで検索...">
+<button id="searchButton">検索</button> 
 </div>
 
-<article class="notification-article">
-<header class="article-header">
-<h2>システムメンテナンスについて</h2>
-<hr class="article-title-separator">
-</header>
-
-<div class="article-meta">
-<span class="category-tag">メンテナンス</span>
-<time datetime="2026-02-03">2026/02/03</time>
+<div class="news-border-box">
+<div class="news-header">
+<h2 class="news-title">すべてのお知らせ</h2>
+<div class="filter-buttons">
+<button onclick="filterCategory('すべて')" class="cat-btn active">すべて</button>
+<button onclick="filterCategory('メンテナンス')" class="cat-btn">メンテナンス</button>
+<button onclick="filterCategory('その他')" class="cat-btn">その他</button>
 </div>
-
-<div class="article-body">
-
-<p>平素よりBrandMaker.nowをご利用いただき、誠にありがとうございます。</p>
-
-<p>サービス向上のため、下記日程にてシステムメンテナンスを実施させていただきます。</p>
-
-<p><strong>■メンテナンス日時</strong><br><strong>2026年2月5日（木）終日（00:00 〜 24:00）</strong><br>※終了時刻は状況により前後する場合がございます。</p>
-
-<p>■対象サイト<br><strong>WorldNow</strong></p>
-
-<p>メンテナンス期間中は、<span style="color: #d9534f;"><strong>対象サイトの閲覧および全サービスがご利用いただけません。</strong></span>
-<br>ユーザーの皆様にはご不便をおかけいたしますが、何卒ご理解いただきますようお願い申し上げます。</p>
-</p><div style="height: 15px;"></div>
-<p style="text-align: right; font-weight: bold; ">BrandMaker.now Team</p>
-
 </div>
-</article>
-</main>
+<ul class="news-list" id="newsList"></ul>
+</div>
+<div class="pagination">
+合計：<span id="totalCount">0</span> 件
+</div>
+</div>
 </main>
 
 <footer>
 <ul>
-<li><a href="../../terms/">利用規約</a></li>
-<li><a href="../../privacy-policy/">プライバシーポリシー</a></li>
+<li><a href="../terms/">利用規約</a></li>
+<li><a href="../privacy-policy/">プライバシーポリシー</a></li>
 </ul>
 <div style="border-top: 1px solid #555; margin-top: 15px; padding-top: 15px; padding-bottom: 20px;">
 &copy; BrandMaker.now. All right reserved.
 </div>
 </footer>
 
-</body>   
+<script src="news-data.js"></script>
+
+<script>
+function displayNews(filter = 'すべて', keyword = '') { const list = document.getElementById('newsList');
+const today = new Date();
+let count = 0;
+list.innerHTML = '';
+
+const sortedData = [...newsData].sort((a, b) => {
+if (a.pinned !== b.pinned) return b.pinned ? -1 : 1;
+return new Date(b.date) - new Date(a.date);
+});
+
+const filteredData = sortedData.filter(item => {
+const matchCat = (filter === 'すべて' || item.category === filter);
+const matchKey = item.title.includes(keyword);
+return matchCat && matchKey;
+});
+
+filteredData.forEach(item => {
+const postDate = new Date(item.date);
+const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
+                
+const li = document.createElement('li');
+li.className = 'news-item';
+                
+if (item.isFinished) { li.classList.add('is-finished'); } 
+else if (item.pinned) { li.classList.add('is-pinned'); }
+                
+let statusText = '';
+if (item.pinned) { statusText = '【対応中】'; }
+else if (item.isFinished) { statusText = '【終了】'; }
+
+const newBadge = (diffDays >= 0 && diffDays < 3) ? '<span class="new-badge">NEW</span>' : '';
+const catClass = item.category === 'メンテナンス' ? 'maintenance' : 'other';
+
+li.innerHTML = `
+<a href="./${item.folder}/">
+<span class="date">${item.date}</span>
+<span class="category ${catClass}">${item.category}</span>
+<span class="status-text">${statusText}</span>
+<span class="title">${item.title}</span>
+${newBadge}
+</a>
+`;
+list.appendChild(li);
+count++;
+});
+document.getElementById('totalCount').innerText = count; }
+
+function filterCategory(cat) {
+document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.toggle('active', btn.innerText === cat));
+displayNews(cat, document.getElementById('searchInput').value);
+}
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+const activeCat = document.querySelector('.cat-btn.active').innerText;
+displayNews(activeCat, e.target.value);
+});
+
+document.getElementById('searchButton').addEventListener('click', () => {
+const activeCat = document.querySelector('.cat-btn.active').innerText;
+displayNews(activeCat, document.getElementById('searchInput').value);
+});
+        
+displayNews();
+</script>
+</body>
 </html>
