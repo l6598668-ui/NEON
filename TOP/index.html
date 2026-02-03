@@ -1,144 +1,130 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>ホーム画面 | BrandMaker.now</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="styles.css">
+<title>BrandMaker.now</title>
 </head>
+
 <body>
 
-    <header class="site-header">
-        <div></div> 
-        <div class="header-links">
-            <a href="../Q&A/" class="contact-link">Q&A</a>
-            <a href="../Contact/" class="contact-link">お問い合わせ</a>
-            <a href="https://x.com/Brandmaker_Now" target="_blank" rel="noopener noreferrer" class="x-icon-link">
-                公式𝕏をフォローする
-            </a>
-        </div>
-    </header>
+<header class="site-header">
+<div class="header-links">
+<a href="../Q&A/" class="contact-link">Q&A</a>
+<a href="../Contact/" class="contact-link">お問い合わせ</a>
+<a href="https://x.com/Brandmaker_Now" target="_blank" rel="noopener noreferrer" class="x-icon-link">
+公式𝕏をフォローする
+</a>
+</div>
+</header>
 
 <main>
-    <h1>アプリ一覧</h1>
+<h1>アプリ一覧</h1>
 
-    <div class="menu-grid">
-        <a href="../WorldNow/" class="menu-item"><i>🗺</i><span>World Now</span></a>
-        <a href="../NewsTyping/" class="menu-item"><i>⌨️</i><span>NewsTyping</span></a>
-    </div>
+<div class="menu-grid">
+<a href="../WorldNow/" class="menu-item"><i>🗺</i><span>World Now</span></a>
+<a href="../NewsTyping/" class="menu-item"><i>⌨️</i><span>NewsTyping</span></a>
+</div>
 
-    <div class="news-wrapper">
-        <div class="search-area">
-            <input type="text" id="searchInput" placeholder="キーワードで検索...">
-            <button id="searchButton">検索</button> 
-        </div>
-
-        <div class="news-border-box">
-            <div class="news-header">
-                <h2 class="news-title">お知らせ</h2>
-                <div class="filter-buttons">
-                    <button onclick="filterCategory('すべて')" class="cat-btn active">すべて</button>
-                    <button onclick="filterCategory('メンテナンス')" class="cat-btn">メンテナンス</button>
-                    <button onclick="filterCategory('その他')" class="cat-btn">その他</button>
-                </div>
-            </div>
-            <ul class="news-list" id="newsList"></ul>
-        </div>
-        <div class="pagination">
-            表示中：<span id="totalCount">0</span> 件
-        </div>
-    </div>
+<div class="news-wrapper">
+<div class="search-area">
+<input type="text" id="searchInput" placeholder="キーワードで検索...">
+<button id="searchButton">検索</button> 
+</div>
+<div class="news-border-box">
+<div class="news-header">
+<h2 class="news-title">お知らせ</h2>
+<div class="filter-buttons">
+<button onclick="filterCategory('すべて')" class="cat-btn active">すべて</button>
+<button onclick="filterCategory('メンテナンス')" class="cat-btn">メンテナンス</button>
+<button onclick="filterCategory('その他')" class="cat-btn">その他</button>
+</div>
+</div>
+<ul class="news-list" id="newsList"></ul>
+</div>
+<div class="pagination">
+表示中：<span id="totalCount">0</span> 件
+</div>
+</div>
 </main>
 
 <footer>
-    <ul>
-        <li><a href="../terms/">利用規約</a></li>
-        <li><a href="../privacy-policy/">プライバシーポリシー</a></li>
-    </ul>
-    <div style="border-top: 1px solid #555; margin-top: 15px; padding-top: 15px; padding-bottom: 20px;">
-        &copy; BrandMaker.now. All right reserved.
-    </div>
+<ul>
+<li><a href="../terms/">利用規約</a></li>
+<li><a href="../privacy-policy/">プライバシーポリシー</a></li>
+</ul>
+<div style="border-top: 1px solid #555; margin-top: 15px; padding-top: 15px; padding-bottom: 20px;">
+&copy; BrandMaker.now. All right reserved.
+</div>
 </footer>
 
-    <!-- ここで外部のデータを読み込む -->
 <script>
- const newsData = [
-        {
-            date: "2026-02-02",
-            category: "メンテナンス",
-            title: "メンテナンスについて",
-            folder: "2026-02-02-メンテナンスについて",
-            pinned: false,
-            isFinished: false
-        }
-];
-        function displayNews(filter = 'すべて', keyword = '') {
-            const list = document.getElementById('newsList');
-            const today = new Date();
-            let count = 0;
-            list.innerHTML = '';
+ const newsData = [{ date: "2026-02-02", category: "メンテナンス", title: "メンテナンスについて", folder: "2026-02-02-メンテナンスについて", pinned: false, isFinished: false }];
+function displayNews(filter = 'すべて', keyword = '') {
+const list = document.getElementById('newsList');
+const today = new Date();
+let count = 0;
+list.innerHTML = '';
 
-            // ピン留めを上にして、次に日付が新しい順に並び替え
-            const sortedData = [...newsData].sort((a, b) => {
-                if (a.pinned !== b.pinned) return b.pinned ? -1 : 1;
-                return new Date(b.date) - new Date(a.date);
-            });
+const sortedData = [...newsData].sort((a, b) => {
+if (a.pinned !== b.pinned) return b.pinned ? -1 : 1;
+return new Date(b.date) - new Date(a.date);});
 
-            // フィルターと検索、さらに「最新5件」に絞り込む
-            const filteredData = sortedData.filter(item => {
-                const matchCat = (filter === 'すべて' || item.category === filter);
-                const matchKey = item.title.includes(keyword);
-                return matchCat && matchKey;
-            }).slice(0, 5); // ここで5件だけに絞っています
+const filteredData = sortedData.filter(item => {
+const matchCat = (filter === 'すべて' || item.category === filter);
+const matchKey = item.title.includes(keyword);
+return matchCat && matchKey; }).slice(0, 5);
 
-            filteredData.forEach(item => {
-                const postDate = new Date(item.date);
-                const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
+filteredData.forEach(item => {
+const postDate = new Date(item.date);
+const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
                 
-                const li = document.createElement('li');
-                li.className = 'news-item';
+const li = document.createElement('li');
+li.className = 'news-item';
+
+if (item.isFinished) { li.classList.add('is-finished'); } 
+else if (item.pinned) { li.classList.add('is-pinned'); }
                 
-                if (item.isFinished) { li.classList.add('is-finished'); } 
-                else if (item.pinned) { li.classList.add('is-pinned'); }
-                
-                let statusText = '';
-                if (item.pinned) { statusText = '【対応中】'; }
-                else if (item.isFinished) { statusText = '【終了】'; }
+let statusText = '';
+if (item.pinned) { statusText = '【対応中】'; }
+else if (item.isFinished) { statusText = '【終了】'; }
 
-                const newBadge = (diffDays >= 0 && diffDays < 3) ? '<span class="new-badge">NEW</span>' : '';
-                const catClass = item.category === 'メンテナンス' ? 'maintenance' : 'other';
+const newBadge = (diffDays >= 0 && diffDays < 3) ? '<span class="new-badge">NEW</span>' : '';
+const catClass = item.category === 'メンテナンス' ? 'maintenance' : 'other';
 
-                li.innerHTML = `
-                    <a href="../information/${item.folder}/">
-                        <span class="date">${item.date}</span>
-                        <span class="category ${catClass}">${item.category}</span>
-                        <span class="status-text">${statusText}</span>
-                        <span class="title">${item.title}</span>
-                        ${newBadge}
-                    </a>
-                `;
-                list.appendChild(li);
-                count++;
-            });
-            document.getElementById('totalCount').innerText = count;
-        }
+li.innerHTML = `
+<a href="../information/${item.folder}/">
+<span class="date">${item.date}</span>
+<span class="category ${catClass}">${item.category}</span>
+<span class="status-text">${statusText}</span>
+<span class="title">${item.title}</span>
+${newBadge}
+</a>
+`;
+list.appendChild(li);
+count++;
+});
+document.getElementById('totalCount').innerText = count;
+}
 
-        function filterCategory(cat) {
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.toggle('active', btn.innerText === cat));
-            displayNews(cat, document.getElementById('searchInput').value);
-        }
+function filterCategory(cat) {
+document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.toggle('active', btn.innerText === cat));
+displayNews(cat, document.getElementById('searchInput').value);
+}
 
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const activeCat = document.querySelector('.cat-btn.active').innerText;
-            displayNews(activeCat, e.target.value);
-        });
+document.getElementById('searchInput').addEventListener('input', (e) => {
+const activeCat = document.querySelector('.cat-btn.active').innerText;
+displayNews(activeCat, e.target.value);
+});
 
-        document.getElementById('searchButton').addEventListener('click', () => {
-            const activeCat = document.querySelector('.cat-btn.active').innerText;
-            displayNews(activeCat, document.getElementById('searchInput').value);
-        });
+document.getElementById('searchButton').addEventListener('click', () => {
+const activeCat = document.querySelector('.cat-btn.active').innerText;
+displayNews(activeCat, document.getElementById('searchInput').value);
+});
         
-        displayNews();
-    </script>
+displayNews();
+</script>
 </body>
 </html>
