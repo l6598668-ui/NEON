@@ -75,7 +75,7 @@ let count = 0;
 list.innerHTML = '';
 
 const sortedData = [...newsData].sort((a, b) => {
-if (a.pinned !== b.pinned) return b.pinned ? -1 : 1;
+if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
 return new Date(b.date) - new Date(a.date);
 });
 
