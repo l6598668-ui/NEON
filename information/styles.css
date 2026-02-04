@@ -27,7 +27,7 @@ body { display: flex; flex-direction: column; }
 
 main, .main-content { flex: 1; }
 
-.site-header { background-color: var(--brand-black); border-bottom: 3px solid var(--card-color); padding: 10px 20px; display: flex !important; justify-content: flex-end !important; align-items: center; }
+.site-header { background-color: var(--brand-black); border-bottom: 3px solid var(--card-color); padding: 10px 20px; display: flex !important; justify-content:space-between !important; align-items: center; }
 
 footer { margin: 0 ; background-color: var(--brand-black); border-top: 7px solid #eee; font-size: 0.9em; color: #ffffff; text-align: center; padding: 20px 0px 0px 0px; }
 
@@ -56,3 +56,5 @@ main, .main-content { background-color: var(--card-color); max-width: 800px; mar
 .breadcrumb li:last-child::after { content: none; }
 
 .breadcrumb a { color: #0066cc; text-decoration: none; }
+
+.header-logo img {　max-height: 50px; display: block; }
