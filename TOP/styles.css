@@ -33,3 +33,5 @@
 .news-item a { flex-wrap: wrap; gap: 8px; }
 .news-item .title { width: 100%; order: 3; }
 }
+
+.breadcrumb { visibility: hidden; }
