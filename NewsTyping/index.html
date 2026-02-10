@@ -1,76 +1,76 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles.css">
-    <title>BrandMaker.now | NewsTyping</title>
-    <style>
-        body { font-family: sans-serif; background: #f0f2f5; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-        .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 90%; max-width: 500px; text-align: center; }
-        #word { font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #333; line-height: 1.4; min-height: 3em; }
-        input { width: 100%; font-size: 18px; padding: 12px; border: 2px solid #ddd; border-radius: 10px; outline: none; box-sizing: border-box; }
-        input:focus { border-color: #007bff; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../styles.css">
+<title>NewsTyping</title>
+<style>
+body { font-family: sans-serif; background: #f0f2f5; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+.container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 90%; max-width: 500px; text-align: center; }
+#word { font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #333; line-height: 1.4; min-height: 3em; }
+input { width: 100%; font-size: 18px; padding: 12px; border: 2px solid #ddd; border-radius: 10px; outline: none; box-sizing: border-box; }
+input:focus { border-color: #007bff; }
 
-        #detail-area { display: none; margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; text-align: left; }
-        #detail-text { font-size: 14px; color: #555; margin-bottom: 10px; }
-        #detail-link { color: #007bff; text-decoration: none; font-weight: bold; display: block; margin-bottom: 15px; }
-        #next-btn { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 16px; }
+#detail-area { display: none; margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; text-align: left; }
+#detail-text { font-size: 14px; color: #555; margin-bottom: 10px; }
+#detail-link { color: #007bff; text-decoration: none; font-weight: bold; display: block; margin-bottom: 15px; }
+#next-btn { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 16px; }
 
-        .info { margin-top: 15px; font-size: 14px; color: #888; }
-        .back { margin-top: 20px; display: block; color: #007bff; text-decoration: none; font-size: 14px; }
+.info { margin-top: 15px; font-size: 14px; color: #888; }
+.back { margin-top: 20px; display: block; color: #007bff; text-decoration: none; font-size: 14px; }
 
-        #setup-area { text-align: left; margin-bottom: 20px; }
-        #news-list-container { max-height: 200px; overflow-y: auto; border: 1px solid #eee; padding: 10px; border-radius: 10px; margin-bottom: 10px; background: #fff; }
-        .news-item { font-size: 13px; margin-bottom: 5px; color: #666; border-bottom: 1px solid #f9f9f9; }
+#setup-area { text-align: left; margin-bottom: 20px; }
+#news-list-container { max-height: 200px; overflow-y: auto; border: 1px solid #eee; padding: 10px; border-radius: 10px; margin-bottom: 10px; background: #fff; }
+.news-item { font-size: 13px; margin-bottom: 5px; color: #666; border-bottom: 1px solid #f9f9f9; }
 
-        #update-time { font-size: 12px; color: #999; margin-bottom: 8px; text-align: right; }
+#update-time { font-size: 12px; color: #999; margin-bottom: 8px; text-align: right; }
 
-        #start-btn { background: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-size: 18px; cursor: pointer; width: 100%; }
-        #start-btn:disabled { background: #ccc; }
-        #game-area { display: none; }
-    </style>
+#start-btn { background: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-size: 18px; cursor: pointer; width: 100%; }
+#start-btn:disabled { background: #ccc; }
+#game-area { display: none; }
+</style>
 </head>
 <body>
-    <header class="site-header">
+<header class="site-header">
     
 <a href="../TOP/" class="back-link">← ホーム</a>
     
-        <div class="header-links">
-            <a href="../Q&A/" class="contact-link">Q&A</a>
-            <a href="../Contact/" class="contact-link">お問い合わせ</a>
-            <a href="https://x.com/Brandmaker_Now" target="_blank" rel="noopener noreferrer" class="x-icon-link">
-                公式𝕏をフォローする
-            </a>
-        </div>
-    </header>
+<div class="header-links">
+<a href="../Q&A/" class="contact-link">Q&A</a>
+<a href="../Contact/" class="contact-link">お問い合わせ</a>
+<a href="https://x.com/Brandmaker_Now" target="_blank" rel="noopener noreferrer" class="x-icon-link">
+公式𝕏をフォローする
+</a>
+</div>
+</header>
 <main>
     
-    <div class="container">
+<div class="container">
 
-        <div id="setup-area">
-            <h3>本日のニュース一覧</h3>
+<div id="setup-area">
+<h3>本日のニュース一覧</h3>
 
-            <div id="update-time"></div>
-            <div id="news-list-container">ニュースを読み込んでいます...</div>
-            <button id="start-btn" disabled>スタート</button>
-        </div>
+<div id="update-time"></div>
+<div id="news-list-container">ニュースを読み込んでいます...</div>
+<button id="start-btn" disabled>スタート</button>
+</div>
 
-        <div id="game-area">
-            <div id="word">準備中...</div>
-            <input type="text" id="input-field" placeholder="ここに入力してください" autocomplete="off">
+<div id="game-area">
+<div id="word">準備中...</div>
+<input type="text" id="input-field" placeholder="ここに入力してください" autocomplete="off">
             
-            <div id="detail-area">
-                <div id="detail-text">正解！ニュースの詳細を読みますか？</div>
-                <a id="detail-link" href="#" target="_blank">👉 詳しくはこちら（Yahoo!ニュース）</a>
-                <button id="next-btn">次のニュースへ</button>
-            </div>
+<div id="detail-area">
+<div id="detail-text">正解！ニュースの詳細を読みますか？</div>
+<a id="detail-link" href="#" target="_blank">👉 詳しくはこちら（Yahoo!ニュース）</a>
+<button id="next-btn">次のニュースへ</button>
+</div>
 
-            <div class="info" id="status">残り: --</div>
-        </div>
+<div class="info" id="status">残り: --</div>
+</div>
         
-        <a href="../index.html" class="back">← ホームに戻る</a>
-    </div>
+<a href="../index.html" class="back">← ホームに戻る</a>
+</div>
 
 <script>
     const wordDisplay = document.getElementById('word');
@@ -164,14 +164,13 @@
 </script>
 </main>
 <footer>
-    <ul>
-        <li><a href="../terms/">利用規約</a></li>
-        <li><a href="../privacy-policy/">プライバシーポリシー</a></li>
-    </ul>
-    <div style="border-top: 1px solid #555; margin-top: 15px; padding-top: 15px; padding-bottom: 20px;">
-        &copy; BrandMaker.now. All right reserved.
-    </div>
+<ul>
+<li><a href="../terms/">利用規約</a></li>
+<li><a href="../privacy-policy/">プライバシーポリシー</a></li>
+</ul>
+<div style="border-top: 1px solid #555; margin-top: 15px; padding-top: 15px; padding-bottom: 20px;">
+&copy; BrandMaker.now. All right reserved.
+</div>
 </footer>
-</body>
-    
+</body> 
 </html>
