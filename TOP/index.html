@@ -105,18 +105,27 @@ function displayNews(filter = 'すべて', keyword = '') {
         const matchCat = (filter === 'すべて' || item.category === filter);
         const matchKey = item.title.includes(keyword);
         return matchCat && matchKey;
-    }).slice(0, 5); // ここで5件に制限
+    }).slice(0, 5);
 
     filteredData.forEach(item => {
         const postDate = new Date(item.date);
         const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
         const li = document.createElement('li');
         li.className = 'news-item';
+        
         if (item.isFinished) { li.classList.add('is-finished'); } 
         else if (item.pinned) { li.classList.add('is-pinned'); }
+        
         let statusText = item.isFinished ? '【終了】' : '';
         const newBadge = (diffDays >= 0 && diffDays < 3) ? '<span class="new-badge">NEW</span>' : '';
-        const catClass = item.category === 'メンテナンス' ? 'maintenance' : 'other';
+
+        // ★ここで「重要」タグの判定を追加しています
+        let catClass = 'other';
+        if (item.category === 'メンテナンス') {
+            catClass = 'maintenance';
+        } else if (item.category === '重要') {
+            catClass = 'important';
+        }
 
         li.innerHTML = `
             <a href="../information/${item.folder}/">
@@ -137,14 +146,10 @@ function filterCategory(cat) {
     displayNews(cat, document.getElementById('searchInput').value);
 }
 
-// ページ読み込み完了時の処理をまとめる
 window.onload = function() {
     displayNews();
-
-    // 検索イベントの設定もここで行う
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
-
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             const activeCat = document.querySelector('.cat-btn.active').innerText;
