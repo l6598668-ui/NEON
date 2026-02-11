@@ -8,7 +8,7 @@ main, .main-content { flex: 1; }
 
 h1 { font-size: 1.8rem; border-bottom: 3px solid #333; padding-bottom: 10px; margin-bottom: 40px; text-align: center; }
 
-.site-header { background-color: #00332e; color: #ffffff; padding: 15px 40px; display: flex; align-items: center; justify-content: space-between; }
+.site-header { background-color: #00332e; color: #ffffff; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 80px; box-sizing: border-box;}
 
 .header-center { text-align: center; }
 
