@@ -155,20 +155,17 @@ function filterCategory(cat) {
     displayNews(cat, document.getElementById('searchInput').value);
 }
 
-window.onload = function() {
+window.addEventListener('DOMContentLoaded', () => {
     displayNews();
+    
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
+    
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
-            const activeCat = document.querySelector('.cat-btn.active').innerText;
+            const activeBtn = document.querySelector('.cat-btn.active');
+            const activeCat = activeBtn ? activeBtn.innerText : 'すべて';
             displayNews(activeCat, e.target.value);
-        });
-    }
-    if (searchButton) {
-        searchButton.addEventListener('click', () => {
-            const activeCat = document.querySelector('.cat-btn.active').innerText;
-            displayNews(activeCat, searchInput.value);
         });
     }
 };
