@@ -89,28 +89,21 @@
 </footer>
 
 
-
-
-
-
-    <script>
-// --- 1. ニュースデータの定義 ---
+<script>
 window.newsData = [
-    { date: "2026-02-03", category: "メンテナンス", title: "システムメンテナンスについて", folder: "2026-02-03-システムメンテナンスについて", pinned: false, isFinished: false },
-    { date: "2026-02-04", category: "メンテナンス", title: "【緊急】システムメンテナンスについて", folder: "2026-02-04-【緊急】システムメンテナンスについて", pinned: true, isFinished: false },
-    { date: "2026-02-09", category: "重要", title: "WorldNowサービス終了のお知らせ", folder: "2026-02-09-WorldNow サービス終了のお知らせ", pinned: false, isFinished: false }
+{ date: "2026-02-03", category: "メンテナンス", title: "システムメンテナンスについて", folder: "2026-02-03-システムメンテナンスについて", pinned: false, isFinished: false },
+{ date: "2026-02-04", category: "メンテナンス", title: "【緊急】システムメンテナンスについて", folder: "2026-02-04-【緊急】システムメンテナンスについて", pinned: true, isFinished: false },
+{ date: "2026-02-09", category: "重要", title: "WorldNowサービス終了のお知らせ", folder: "2026-02-09-WorldNow サービス終了のお知らせ", pinned: false, isFinished: false }
 ];
 
-// --- 2. ニュースを表示する関数 ---
 function displayNews(filter = 'すべて', keyword = '') {
     const list = document.getElementById('newsList');
     const totalCountEl = document.getElementById('totalCount');
     if (!list) return;
 
     const today = new Date();
-    list.innerHTML = ''; // 一旦空にする
+    list.innerHTML = '';
 
-    // 重要・ピン留めを優先してソート
     const sortedData = [...window.newsData].sort((a, b) => {
         const aPriority = (a.category === '重要' || a.pinned);
         const bPriority = (b.category === '重要' || b.pinned);
@@ -118,26 +111,22 @@ function displayNews(filter = 'すべて', keyword = '') {
         return new Date(b.date) - new Date(a.date);
     });
 
-    // フィルタリング（カテゴリーとキーワード）
     const filteredData = sortedData.filter(item => {
         const matchCat = (filter === 'すべて' || item.category === filter);
         const matchKey = item.title.toLowerCase().includes(keyword.toLowerCase());
         return matchCat && matchKey;
     });
 
-    // 表示用のHTMLを生成
     filteredData.forEach(item => {
         const postDate = new Date(item.date);
         const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
         
         const li = document.createElement('li');
         li.className = 'news-item';
-        
-        // 状態に応じたクラス付与
+
         if (item.isFinished) li.classList.add('is-finished');
         if (item.pinned) li.classList.add('is-pinned');
 
-        // カテゴリーごとの色分け用クラス
         let catClass = 'other';
         if (item.category === 'メンテナンス') catClass = 'maintenance';
         if (item.category === '重要') catClass = 'important';
@@ -145,7 +134,6 @@ function displayNews(filter = 'すべて', keyword = '') {
         const statusText = item.isFinished ? '【終了】' : '';
         const newBadge = (diffDays >= 0 && diffDays < 3) ? '<span class="new-badge">NEW</span>' : '';
 
-        // リンク先URLの組み立て（フォルダ名を使用）
         li.innerHTML = `
             <a href="../information/${item.folder}/">
                 <span class="date">${item.date}</span>
@@ -157,31 +145,29 @@ function displayNews(filter = 'すべて', keyword = '') {
         list.appendChild(li);
     });
 
-    // 件数の表示更新
     if (totalCountEl) totalCountEl.innerText = filteredData.length;
 }
 
-// --- 3. カテゴリーボタンが押された時の処理 ---
 function filterCategory(cat) {
-    // ボタンのactiveクラスを付け替え
+
     document.querySelectorAll('.cat-btn').forEach(btn => {
         btn.classList.toggle('active', btn.innerText === cat);
     });
     
-    // 検索ワードを考慮して再描画
+
     const keyword = document.getElementById('searchInput')?.value || '';
     displayNews(cat, keyword);
 }
 
-// --- 4. ページ読み込み時の初期設定 ---
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 最初に全データを表示
+
     displayNews();
 
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
 
-    // キーワード入力時にリアルタイム検索
+
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             const activeBtn = document.querySelector('.cat-btn.active');
@@ -190,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 検索ボタンクリック時
+
     if (searchButton) {
         searchButton.addEventListener('click', () => {
             const activeBtn = document.querySelector('.cat-btn.active');
@@ -200,16 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
-
-
-
-
-    
-
-
-
-
-    
 
 </body>
 </html>
