@@ -97,10 +97,18 @@ function displayNews(filter = 'すべて', keyword = '') {
     let count = 0;
     list.innerHTML = '';
 
-    const sortedData = [...data].sort((a, b) => {
-        if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
-        return new Date(b.date) - new Date(a.date);
-    });
+    // 1. 重要またはピン留めを最優先、2. その中で日付が新しい順
+const sortedData = [...data].sort((a, b) => {
+    // 「重要」タグまたは「ピン留め」があるかどうかを判定
+    const aPriority = (a.category === '重要' || a.pinned);
+    const bPriority = (b.category === '重要' || b.pinned);
+
+    if (aPriority !== bPriority) {
+        return aPriority ? -1 : 1; // 優先度がある方を上に
+    }
+    return new Date(b.date) - new Date(a.date); // 同じ優先度なら日付順
+});
+
 
     const filteredData = sortedData.filter(item => {
         const matchCat = (filter === 'すべて' || item.category === filter);
