@@ -24,7 +24,7 @@ h1 { font-size: 1.8rem; border-bottom: 3px solid #333; padding-bottom: 10px; mar
 
 .Contact:hover { opacity: 0.7; }
 
-.support-info { font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.support-info { font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-direction: column; align-items: center; }
 
 .time { opacity: 0.9; font-weight: bold; margin: 0 !important; font-size: 12px !important; line-height: 1.2; white-space: nowrap; }
 
