@@ -3,32 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../script.js">
 <link rel="icon" href="../favicon.png">
 <title>お問い合わせ</title>
 <style>
 #policy-box { height: 200px; overflow-y: scroll; border: 2px solid #ccc; padding: 15px; background: #f9f9f9; margin-bottom: 20px; font-size: 0.9em; }
-
 #show-form-btn { padding: 12px 24px; font-size: 1rem; font-weight: bold; border: none; border-radius: 5px; background-color: #ccc; color: #fff; cursor: not-allowed; transition: 0.3s; }
 </style>
 </head>
 
 <body>
 <header class="site-header">
+
 <div class="logo">
 <a href="../TOP/">
 <img src="../header.png" alt="BrandMaker.now" width="150">
 </a>
 </div>
-<div class="header-links">
-<a href="../Q&A/" class="contact-link">Q&A</a>
-<a href="../Contact/" class="contact-link">お問い合わせ</a>
-<a href="https://x.com/Brandmaker_Now" target="_blank" rel="noopener noreferrer" class="x-icon-link">
-公式𝕏をフォローする
-</a>
-</div>
-</header>
 
+<div class="header-center">
+<div class="support-unit">
+<div class="support-buttons">
+<a href="../Q&A/" class="btn QA">Q&A</a>
+<a href="../Contact/" class="btn Contact">お問い合わせ</a>
+</div>
+
+<div class="support-info">
+<p class="time">返信対応時間：平日 10:00 〜 17:00</p>
+<span id="status-message" class="status-badge">24時間受付中</span>
+</div>
+</div>
+</div>
+
+<div class="header-right">
+<a href="https://x.com/Brandmaker_Now" target="_blank" rel="noopener noreferrer" class="x-link"><img src="../logo.svg" alt="𝕏" width="150"></a>
+</div>
+
+</header>
 <main>
 <nav class="breadcrumb">
 <ol>
