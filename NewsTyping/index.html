@@ -185,6 +185,8 @@ input:focus { border-color: #007bff; }
         updateDisplay();
     });
 
+    inputField.addEventListener('paste', (e) => e.preventDefault());
+
     init();
 </script>
 </main>
