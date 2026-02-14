@@ -57,6 +57,12 @@
 <button onclick="document.getElementById('myModal').showModal()" class="help-btn">?</button>
 </div>
 
+<dialog id="myModal" class="modal-box">
+<button onclick="document.getElementById('myModal').close()" class="close-btn">&times;</button>
+<h3>NewsTypingの遊び方</h3>
+<p>表示されるニュースのタイトルを正しくタイピングしてください。正解すると詳細を確認できます！</p>
+</dialog>
+
 <div id="update-time"></div>
 <div id="news-list-container">ニュースを読み込んでいます...</div>
 <button id="start-btn" disabled>スタート</button>
