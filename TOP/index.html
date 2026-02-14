@@ -92,9 +92,9 @@
 
 <script>
 window.newsData = [
-{ date: "2026-02-03", category: "メンテナンス", title: "システムメンテナンスについて", folder: "2026-02-03-システムメンテナンスについて", pinned: false, isFinished: false },
-{ date: "2026-02-04", category: "メンテナンス", title: "【緊急】システムメンテナンスについて", folder: "2026-02-04-【緊急】システムメンテナンスについて", pinned: true, isFinished: false },
-{ date: "2026-02-09", category: "重要", title: "WorldNowサービス終了のお知らせ", folder: "2026-02-09-WorldNow サービス終了のお知らせ", pinned: false, isFinished: false }
+{ date: "2026-02-03", category: "メンテナンス", title: "システムメンテナンスについて", folder: "2026-02-03-システムメンテナンスについて", pinned: false, isFinished: true },
+{ date: "2026-02-04", category: "メンテナンス", title: "【緊急】システムメンテナンスについて", folder: "2026-02-04-【緊急】システムメンテナンスについて", pinned: true, isFinished: true },
+{ date: "2026-02-09", category: "重要", title: "WorldNowサービス終了のお知らせ", folder: "2026-02-09-WorldNow サービス終了のお知らせ", pinned: false, isFinished: true }
 ];
 
 function displayNews(filter = 'すべて', keyword = '') {
@@ -132,17 +132,15 @@ function displayNews(filter = 'すべて', keyword = '') {
         if (item.category === 'メンテナンス') catClass = 'maintenance';
         if (item.category === '重要') catClass = 'important';
 
-        const statusText = item.isFinished ? '【終了】' : '';
         const newBadge = (diffDays >= 0 && diffDays < 3) ? '<span class="new-badge">NEW</span>' : '';
 
         li.innerHTML = `
-            <a href="../information/${item.folder}/">
-                <span class="date">${item.date}</span>
-                <span class="category ${catClass}">${item.category}</span>
-                <span class="status-text">${statusText}</span>
-                <span class="title">${item.title}</span>
-                ${newBadge}
-            </a>`;
+    <a href="../information/${item.folder}/">
+        <span class="date">${item.date}</span>
+        <span class="category ${catClass}">${item.category}</span>
+        <span class="title">${item.title}</span>
+        ${newBadge}
+    </a>`;
         list.appendChild(li);
     });
 
