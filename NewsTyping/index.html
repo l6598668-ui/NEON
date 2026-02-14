@@ -8,31 +8,6 @@
 <link rel="icon" href="../favicon.png">
 <title>NewsTyping</title>
 <meta name="description" content="今、日本で起きているニュースをタイピングしながら学べる『NewsTyping』。最新の時事ネタを教材に、楽しみながらタイピングスキルを向上させることができる学習型アプリです。">
-<style>
-  
-body { font-family: sans-serif; background: #f0f2f5; margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
-.container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 90%; max-width: 500px; text-align: center; margin: 20px auto;}
-#word { font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #333; line-height: 1.4; min-height: 3em; }
-input { width: 100%; font-size: 18px; padding: 12px; border: 2px solid #ddd; border-radius: 10px; outline: none; box-sizing: border-box; }
-input:focus { border-color: #007bff; }
-
-#detail-area { display: none; margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; text-align: left; }
-#detail-text { font-size: 14px; color: #555; margin-bottom: 10px; }
-#detail-link { color: #007bff; text-decoration: none; font-weight: bold; display: block; margin-bottom: 15px; }
-#next-btn { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 16px; }
-
-.info { margin-top: 15px; font-size: 14px; color: #888; }
-
-#setup-area { text-align: left; margin-bottom: 20px; }
-#news-list-container { max-height: 200px; overflow-y: auto; border: 1px solid #eee; padding: 10px; border-radius: 10px; margin-bottom: 10px; background: #fff; }
-.news-item { font-size: 13px; margin-bottom: 5px; color: #666; border-bottom: 1px solid #f9f9f9; }
-
-#update-time { font-size: 12px; color: #999; margin-bottom: 8px; text-align: right; }
-
-#start-btn { background: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-size: 18px; cursor: pointer; width: 100%; }
-#start-btn:disabled { background: #ccc; }
-#game-area { display: none; }
-</style>
 </head>
 <body>
 <header class="site-header">
@@ -75,7 +50,11 @@ input:focus { border-color: #007bff; }
 <div class="container">
 
 <div id="setup-area">
+
+<div class="news-header">
 <h3>本日のニュース一覧</h3>
+<button onclick="document.getElementById('myModal').showModal()" class="help-btn">?</button>
+</div>
 
 <div id="update-time"></div>
 <div id="news-list-container">ニュースを読み込んでいます...</div>
