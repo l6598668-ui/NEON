@@ -1,4 +1,4 @@
-:root { --bg-color: #f0f2f5; --card-color: #ffffff; --text-color: #333; --accent-color: #FFD700; --brand-black: #002F27; --brand-yellow: #FFD700; }
+:root { --bg-color: #f0f2f5; --card-color: #ffffff; --text-color: #333; --accent-color: #FFD700; --brand-black: #002F27; --brand-yellow: #FFD700; scroll-behavior: smooth; }
 
 html, body { height: 100%; margin: 0; background-color: var(--bg-color); }
 
