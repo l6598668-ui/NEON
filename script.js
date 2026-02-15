@@ -27,12 +27,20 @@ function updateStatus() {
 updateStatus();
 
 
-const btn = document.getElementById('js-scroll-top');
+const scrollTopBtn = document.getElementById('js-scroll-top');
 
 window.addEventListener('scroll', () => {
   if (window.scrollY > 100) {
-    btn.classList.add('is-show');
+    scrollTopBtn.classList.add('is-show');
   } else {
-    btn.classList.remove('is-show');
+    scrollTopBtn.classList.remove('is-show');
   }
+});
+
+scrollTopBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 });
