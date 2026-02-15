@@ -27,20 +27,24 @@ function updateStatus() {
 updateStatus();
 
 
-const scrollTopBtn = document.getElementById('js-scroll-top');
-
+const btn = document.getElementById('js-pagetop');
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 100) {
-    scrollTopBtn.classList.add('is-show');
-  } else {
-    scrollTopBtn.classList.remove('is-show');
-  }
+    if (window.scrollY > 100) {
+        btn.classList.add('is-show');
+    } else {
+        btn.classList.remove('is-show');
+    }
 });
 
-scrollTopBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
+btn.addEventListener('click', () => {
+    const scrollStep = () => {
+        const currentY = window.scrollY;
+        if (currentY > 0) {
+            const move = Math.max(currentY / 10, 1); 
+            window.scrollTo(0, currentY - move);
+            requestAnimationFrame(scrollStep);
+        }
+    };
+    
+    requestAnimationFrame(scrollStep);
 });
