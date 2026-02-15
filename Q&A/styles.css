@@ -10,3 +10,33 @@
 .faq-category summary .label { color: #0055ff; }
 .faq-category .answer .label { color: #ff3300; }
 .faq-category .text { margin: 0; line-height: 1.6; }
+
+.update-list { list-style: none !important; padding: 0 !important; margin: 0 !important; }
+
+.update-list a { display: flex !important; text-decoration: none !important;  color: #666 !important; font-size: 0.85rem; line-height: 2; font-weight: normal !important; border: none !important; }
+
+.update-list a:hover { font-weight: normal !important; color: #333 !important; }
+
+.update-date { display: inline-block; width: 100px; text-align: right; margin-right: 15px; flex-shrink: 0; font-family: monospace; }
+
+.update-text { flex-grow: 1; }
+
+.update-box { max-height: 90px; overflow-y: auto; }
+
+.update-history-container { max-width: 900px; margin: 10px auto 20px; border: 1px solid #ddd; border-radius: 8px; padding: 12px 15px; background-color: #f9f9f9; }
+
+.update-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: bold; font-size: 0.9em; }
+
+.update-box { max-height: 50px; overflow-y: auto; transition: max-height 0.3s ease; }
+
+.update-list { list-style: none; padding: 0; margin: 0; }
+
+.update-list li { margin-bottom: 5px; font-size: 0.85em; line-height: 1.4; }
+
+.update-list a { color: #007bff; text-decoration: none; }
+
+.update-list a:hover { text-decoration: underline; }
+
+.hidden-item { display: none; }
+
+#more-btn { background: none; border: none; color: #888; cursor: pointer; font-size: 0.75em; text-decoration: underline; }
